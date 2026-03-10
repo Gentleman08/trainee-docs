@@ -17,6 +17,13 @@
 | [Nginx — Hands-On Practice Lab](nginx_practice_lab.md) | Nginx | Beginner → Advanced | 10 progressive exercises |
 | [IIS — Hands-On Practice Lab](iis_practice_lab.md) | IIS (Windows Server) | Beginner → Advanced | 10 progressive exercises |
 
+## Networking & Cloud Labs
+
+| Lab | Category | Difficulty | Exercises |
+|-----|----------|------------|-----------|
+| [Networking — Build a Multi-Tier Network from Scratch](networking_practice_lab.md) | Networking | Beginner → Advanced | 8 progressive phases |
+| [Cloud — Deploy a Production-Grade Web App on AWS](cloud_practice_lab.md) | Cloud / AWS | Beginner → Advanced | 9 progressive phases |
+
 ---
 
 [🏠 Back to Home](../README.md)
