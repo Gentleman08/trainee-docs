@@ -21,15 +21,15 @@
 | 10 | Storage & Databases (Blob, Files, Redundancy, Tiers, SQL, Cosmos, Partitioning) | ✅ Complete | 2470 |
 | 11 | AVD (Host Pools, FSLogix, Session Hosts, Profile Containers, RemoteApps) | ✅ Complete | 2660 |
 | 12 | Monitoring & KQL (Monitor, Log Analytics, App Insights, KQL operators, Alerts) | ✅ Complete | 2895 |
-| 13 | Security (Defender, Sentinel, Key Vault, Zero Trust, Confidential Computing) | ⏳ Pending | — |
-| 14 | DevOps & Deployment (Pipelines, Git, Blue-Green, Canary, Feature Flags, Policy) | ⏳ Pending | — |
-| 15 | Governance, Cost & DR (Policy, Landing Zones, FinOps, Backup, ASR, Messaging) | ⏳ Pending | — |
-| 16 | Advanced Networking & Protocols (TCP/TLS, mTLS, VXLAN, Overlay, Certificates) | ⏳ Pending | — |
-| 17 | Advanced Compute, Patterns & Caching (Resiliency, Circuit Breaker, Redis, Scaling) | ⏳ Pending | — |
-| 18 | AD DS Fundamentals (DC, Forest, Domain, FSMO, OU, Domain Join, Computer Objects) | ⏳ Pending | — |
-| 19 | AD Auth, GPO & Replication (Kerberos, NTLM, LDAP, GPO, SYSVOL, DNS Integration) | ⏳ Pending | — |
-| 20 | Hybrid Identity & Federation (Entra Connect, PHS, PTA, SSO, B2B/B2C, FIDO2) | ⏳ Pending | — |
-| 21 | AD Security, Attacks & Operations (Kerberoasting, LAPS, PAW, dcdiag, Trusts) | ⏳ Pending | — |
+| 13 | Security (Defender, Sentinel, Key Vault, Zero Trust, Confidential Computing) | ✅ Complete | 3105 |
+| 14 | DevOps & Deployment (Pipelines, Git, Blue-Green, Canary, Feature Flags, Policy) | ✅ Complete | 3335 |
+| 15 | Governance, Cost & DR (Policy, Landing Zones, FinOps, Backup, ASR, Messaging) | ✅ Complete | 3560 |
+| 16 | Advanced Networking & Protocols (TCP/TLS, mTLS, VXLAN, Overlay, Certificates) | ✅ Complete | 3775 |
+| 17 | Advanced Compute, Patterns & Caching (Resiliency, Circuit Breaker, Redis, Scaling) | ✅ Complete | 3985 |
+| 18 | AD DS Fundamentals (DC, Forest, Domain, FSMO, OU, Domain Join, Computer Objects) | ✅ Complete | 4210 |
+| 19 | AD Auth, GPO & Replication (Kerberos, NTLM, LDAP, GPO, SYSVOL, DNS Integration) | ✅ Complete | 4455 |
+| 20 | Hybrid Identity & Federation (Entra Connect, PHS, PTA, SSO, B2B/B2C, FIDO2) | ✅ Complete | 4650 |
+| 21 | AD Security, Attacks & Operations (Kerberoasting, LAPS, PAW, dcdiag, Trusts) | ✅ Complete | 4905 |
 
 ---
 

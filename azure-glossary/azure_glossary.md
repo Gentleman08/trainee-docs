@@ -2890,4 +2890,2014 @@ traces | extend parsed = parse_json(message)
 
 ---
 
-<!-- BATCH 13 STARTS HERE -->
+# 13 — Security
+
+---
+
+### Microsoft Defender for Cloud
+
+**What:** Cloud Security Posture Management (CSPM) + workload protection. Continuously assesses your Azure resources for security misconfigurations and provides recommendations.
+
+```
+  ┌──────────────────────────────────────────────┐
+  │  Defender for Cloud                          │
+  │                                              │
+  │  CSPM (free):                                │
+  │  • Secure Score                              │
+  │  • Security recommendations                  │
+  │  • Regulatory compliance dashboard           │
+  │                                              │
+  │  Workload Protection (paid plans):           │
+  │  • Defender for Servers (VM threat detection)│
+  │  • Defender for SQL (injection detection)    │
+  │  • Defender for Containers (image scanning)  │
+  │  • Defender for Key Vault (anomaly alerts)   │
+  └──────────────────────────────────────────────┘
+```
+
+---
+
+### Secure Score
+
+**What:** A percentage (0-100%) showing your security posture. Higher = more secure. Each recommendation has points. Fix issues → score goes up.
+
+**DevOps example:** Secure Score is 72%. Top recommendation: "Enable MFA for all privileged accounts" (+8 points). Fix it → score becomes 80%.
+
+---
+
+### Vulnerability Assessment
+
+**What:** Scans VMs, containers, and SQL databases for known CVEs (Common Vulnerabilities and Exposures). Reports which patches are missing and severity.
+
+---
+
+### Adaptive Application Controls
+
+**What:** ML-based allowlisting. Defender learns which applications normally run on your VMs, then alerts if an unknown executable runs (possible malware).
+
+---
+
+### Regulatory Compliance Dashboard
+
+**What:** Maps your Azure configuration against compliance frameworks (CIS, NIST, PCI-DSS, HIPAA, ISO 27001). Shows pass/fail per control.
+
+---
+
+### Microsoft Sentinel
+
+**What:** Cloud-native SIEM + SOAR. Collects security logs from Azure, M365, on-prem, and third-party sources. Detects threats with analytics rules, investigates with hunting queries, and auto-responds with playbooks.
+
+```
+  ┌──────────────────────────────────────────────┐
+  │  Sentinel Pipeline                           │
+  │                                              │
+  │  Collect: Data connectors (Azure AD, M365,   │
+  │           Firewall, Syslog, AWS, etc.)       │
+  │     │                                        │
+  │  Detect: Analytics rules (scheduled KQL      │
+  │          queries that create incidents)      │
+  │     │                                        │
+  │  Investigate: Incidents, entity mapping,     │
+  │               hunting queries, UEBA          │
+  │     │                                        │
+  │  Respond: Playbooks (Logic Apps) auto-run    │
+  │           on incident creation               │
+  └──────────────────────────────────────────────┘
+```
+
+---
+
+### SIEM (Security Information and Event Management)
+
+**What:** Centralized log collection + correlation + alerting. Sentinel IS Azure's SIEM. Collects logs from everywhere, correlates events, and detects attack patterns.
+
+---
+
+### SOAR (Security Orchestration, Automation, and Response)
+
+**What:** Automates incident response. When Sentinel detects a threat, a playbook (Logic App) runs automatically — blocks an IP, disables an account, creates a ticket.
+
+---
+
+### Analytics Rules
+
+**What:** KQL queries that run on a schedule in Sentinel. When results match, an incident is created. "If more than 5 failed logins from same IP in 10 minutes → create incident."
+
+---
+
+### Hunting Queries
+
+**What:** Proactive KQL queries to find threats BEFORE they trigger rules. Security analysts write custom queries to look for suspicious patterns. "Find all PowerShell executions from non-admin accounts."
+
+---
+
+### Workbooks (Sentinel)
+
+**What:** Interactive dashboards in Sentinel. Visualize security data — failed logins by country, top attacked resources, threat trends over time.
+
+---
+
+### UEBA (User and Entity Behavior Analytics)
+
+**What:** Builds behavioral profiles for users and entities. Detects anomalies — "User John normally logs in from NYC. Today he logged in from Russia AND downloaded 10GB of data."
+
+---
+
+### Incident Management
+
+**What:** Sentinel groups related alerts into incidents. An incident = a potential security breach. Analysts triage (true positive vs false positive), investigate, and respond.
+
+---
+
+### Threat Hunting
+
+**What:** Proactively searching for threats that haven't triggered any alerts. Uses hunting queries, threat intelligence, and hypothesis-driven investigation.
+
+---
+
+### Key Vault
+
+**What:** Secure store for secrets (passwords, connection strings), certificates, and encryption keys. RBAC-controlled, audited, and integrated with managed identities.
+
+---
+
+### Secrets / Certificates / Keys
+
+| Type | What it stores | Example |
+|------|---------------|---------|
+| **Secrets** | Passwords, API keys, connection strings | `DB-ConnectionString` |
+| **Certificates** | TLS/SSL certificates with auto-renewal | `*.myapp.com` wildcard cert |
+| **Keys** | Encryption keys (RSA, EC) | Disk encryption key |
+
+---
+
+### RBAC vs Access Policies (Key Vault)
+
+| Method | Details |
+|--------|---------|
+| **RBAC** (recommended) | Uses standard Azure RBAC roles. Visible in IAM blade. Auditable. Supports Conditional Access |
+| **Access Policies** (legacy) | Per-vault policies. Not visible in IAM. Harder to audit across many vaults |
+
+---
+
+### HSM (Hardware Security Module)
+
+**What:** Dedicated hardware for cryptographic operations. Keys never leave the HSM chip. FIPS 140-2 Level 3 certified. Managed HSM = dedicated HSM pool in Key Vault.
+
+---
+
+### Confidential Computing
+
+**What:** Data is encrypted WHILE BEING PROCESSED (in-use), not just at rest and in transit. Uses hardware enclaves (Intel SGX, AMD SEV). Even Azure admins can't see your data.
+
+```
+  Traditional:     At-rest ✓ (encrypted disk)
+                   In-transit ✓ (TLS)
+                   In-use ✗ (data in RAM is plaintext)
+
+  Confidential:    At-rest ✓
+                   In-transit ✓
+                   In-use ✓ (hardware enclave protects RAM)
+```
+
+---
+
+### Trusted Launch
+
+**What:** Security features for VMs: Secure Boot + vTPM. Protects against boot-level attacks (rootkits, bootkits). Enable at VM creation.
+
+---
+
+### Secure Boot
+
+**What:** Ensures only signed, trusted software loads during VM boot. Blocks malware that tries to inject itself into the boot process.
+
+---
+
+### vTPM (Virtual Trusted Platform Module)
+
+**What:** Virtual security chip that stores encryption keys, measures boot integrity, and supports BitLocker. Required for Trusted Launch and Windows 11.
+
+---
+
+### Zero Trust
+
+**What:** Security model: "never trust, always verify." Every request is authenticated and authorized, regardless of where it comes from. No implicit trust for internal network traffic.
+
+```
+  Traditional:  Inside the firewall = trusted
+  Zero Trust:   Nothing is trusted. Every request must prove:
+                1. WHO you are (identity)
+                2. WHAT device (compliance)
+                3. WHERE from (location)
+                4. WHAT you're accessing (least privilege)
+```
+
+**DevOps implementation:** Managed identities (no passwords), Private Endpoints (no public access), Conditional Access (verify every login), Network segmentation (NSGs on every subnet).
+
+---
+
+# 14 — DevOps & Deployment Strategies
+
+---
+
+### Azure DevOps
+
+**What:** Microsoft's all-in-one DevOps platform. Five services: Repos (Git), Pipelines (CI/CD), Boards (project tracking), Artifacts (package feeds), Test Plans (testing).
+
+---
+
+### Azure Repos
+
+**What:** Git repositories hosted in Azure DevOps. Supports unlimited private repos, branch policies, pull request reviews, and integration with Pipelines.
+
+---
+
+### Azure Pipelines
+
+**What:** CI/CD automation. Build code, run tests, deploy to any cloud. Supports YAML pipelines (code-defined) and classic (GUI-defined). Free tier: 1 parallel job, 1800 min/month.
+
+---
+
+### Azure Boards
+
+**What:** Work item tracking — Epics, Features, User Stories, Tasks, Bugs. Kanban boards, sprint planning, and burndown charts. Integrates with Repos (link commits to work items).
+
+---
+
+### Azure Artifacts
+
+**What:** Package feed hosting. Store and share NuGet, npm, Maven, Python, and universal packages. Private feeds for your organization.
+
+---
+
+### YAML Pipelines
+
+**What:** Define your CI/CD pipeline as code in a YAML file (`azure-pipelines.yml`). Stored in Git alongside your app code. Version-controlled, reviewable via PRs.
+
+```yaml
+trigger:
+  branches: [main]
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildApp
+    pool: { vmImage: 'ubuntu-latest' }
+    steps:
+    - script: npm install && npm test
+    - task: Docker@2
+      inputs: { command: buildAndPush }
+
+- stage: Deploy
+  dependsOn: Build
+  jobs:
+  - deployment: Production
+    environment: 'prod'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+```
+
+---
+
+### CI/CD
+
+**What:** Continuous Integration (automatically build + test on every commit) + Continuous Delivery/Deployment (automatically deploy to staging/production).
+
+```
+  CI:  Push code → Build → Run tests → ✓ or ✗
+  CD:  Build passes → Deploy to staging → Approval → Deploy to prod
+
+  CI catches bugs early. CD delivers value fast.
+```
+
+---
+
+### Git
+
+**What:** Distributed version control system. Every developer has a full copy of the repository. Changes are tracked as commits. Branches enable parallel work.
+
+---
+
+### Branching Strategies
+
+```
+  ┌─────────────────┬──────────────────────────────────────┐
+  │ Strategy        │ How it works                         │
+  ├─────────────────┼──────────────────────────────────────┤
+  │ Trunk-based     │ All devs commit to main. Short-lived │
+  │                 │ feature branches. Deploy from main.  │
+  │ GitFlow         │ develop, feature/*, release/*, main. │
+  │                 │ Complex but structured.              │
+  │ GitHub Flow     │ main + feature branches. PR to main. │
+  │                 │ Simple. Most popular.                │
+  └─────────────────┴──────────────────────────────────────┘
+```
+
+---
+
+### Merge Strategies
+
+| Strategy | What it does |
+|----------|-------------|
+| **Merge commit** | Creates a merge commit preserving full branch history |
+| **Squash merge** | Combines all branch commits into one clean commit on main |
+| **Rebase** | Replays your commits on top of the latest main. Linear history |
+
+---
+
+### Rebase
+
+**What:** Moves your branch's commits to the tip of main. Creates linear history (no merge commits). Cleaner but rewrites history — never rebase shared/public branches.
+
+---
+
+### Cherry-pick
+
+**What:** Copy a specific commit from one branch to another without merging the whole branch. Used for hotfixes — pick the fix from dev, apply to main.
+
+---
+
+### Blue-Green Deployment
+
+**What:** Two identical environments: Blue (current production) and Green (new version). Deploy to Green → test → switch traffic from Blue to Green. Instant rollback = switch back to Blue.
+
+```
+  ┌─────────┐    traffic    ┌─────────┐
+  │ Blue    │◄══════════════│ Users   │
+  │ v1.0    │    (current)  └─────────┘
+  └─────────┘
+  ┌─────────┐
+  │ Green   │  ← deploy v2.0 here, test
+  │ v2.0    │  ← switch traffic when ready
+  └─────────┘
+```
+
+---
+
+### Canary Deployment
+
+**What:** Route a small percentage of traffic (e.g., 5%) to the new version. Monitor for errors. Gradually increase (5% → 25% → 50% → 100%). Rollback if issues appear.
+
+```
+  v1.0: 95% of traffic ──────────►
+  v2.0:  5% of traffic ──► (monitor errors, latency)
+  
+  If healthy: 5% → 25% → 50% → 100%
+  If broken:  shift back to 0% instantly
+```
+
+---
+
+### Rolling Deployment
+
+**What:** Update instances one at a time (or in batches). Instance 1 gets v2.0 while instances 2-5 still run v1.0. Then instance 2, then 3... No extra infrastructure needed.
+
+---
+
+### Immutable Infrastructure
+
+**What:** Never patch or modify running servers. Instead, build a NEW image with the changes and replace the old instances entirely. If something breaks, deploy the previous image.
+
+```
+  Mutable:   SSH into server → apt update → pip install → hope it works
+  Immutable: Build new image → deploy fresh instances → kill old ones
+```
+
+---
+
+### Drift Detection
+
+**What:** Detecting when actual infrastructure differs from the IaC definition. A VM was manually resized, a port was opened by hand — these changes "drift" from the declared state.
+
+**DevOps example:** Terraform plan shows "3 resources changed" but nobody committed any Terraform changes → someone made manual portal changes (drift!).
+
+---
+
+### Artifact Feeds
+
+**What:** Private package repositories in Azure Artifacts. Publish internal libraries (npm, NuGet) and consume them across teams. Upstream sources proxy public registries (npmjs.org).
+
+---
+
+### Pipeline Agent
+
+**What:** The machine that actually executes pipeline jobs. Can be Microsoft-hosted (managed VMs) or self-hosted (your own VMs/containers).
+
+---
+
+### Self-Hosted Agent vs Microsoft-Hosted Agent
+
+| Type | Pros | Cons |
+|------|------|------|
+| **Microsoft-hosted** | Zero maintenance, fresh VM each job | Limited software, can't access private VNets |
+| **Self-hosted** | Full control, VNet access, cached dependencies | You manage patching, scaling, availability |
+
+---
+
+### Agent Pool
+
+**What:** A group of agents. Jobs are dispatched to any available agent in the pool. Organize by purpose: "linux-pool", "windows-pool", "gpu-pool".
+
+---
+
+### Secure Files / Variable Groups
+
+**What:** Secure Files = store certificates, SSH keys, mobile provisioning profiles in Pipelines. Variable Groups = shared sets of variables (like connection strings) used across multiple pipelines.
+
+---
+
+### Environment Approvals / Release Gates
+
+**What:** Manual or automated checks before deploying to a stage. Approvals = a person clicks "approve." Gates = automated checks (query Azure Monitor for zero errors, check work item count).
+
+---
+
+### Branch Policies
+
+**What:** Rules enforced on Git branches. Require PR reviews before merge, require passing CI build, require linked work items, enforce merge strategy.
+
+**DevOps example:** `main` branch policy: minimum 2 reviewers, build must pass, squash merge only, no direct pushes.
+
+---
+
+### Protected Branch / Required Reviewers
+
+**What:** `main` and `release/*` branches are protected — no one can push directly. All changes go through PRs with required reviewers. Prevents "oops I pushed to production."
+
+---
+
+# 15 — Governance, Cost & Disaster Recovery
+
+---
+
+### Azure Policy
+
+**What:** Enforce organizational rules on Azure resources. "All storage accounts must use HTTPS." "VMs must be in approved regions." Policies evaluate at resource creation and on existing resources.
+
+```
+  Policy effects:
+  • Audit     → logs non-compliance (doesn't block)
+  • Deny      → blocks non-compliant resource creation
+  • Modify    → auto-fixes resources (e.g., add missing tags)
+  • DeployIfNotExists → deploys a resource if missing
+  • Append    → adds fields to requests
+```
+
+---
+
+### Initiative Definitions
+
+**What:** A BUNDLE of related policies. Instead of assigning 20 policies individually, assign one initiative. Example: "CIS Benchmark" initiative contains 200+ security policies.
+
+---
+
+### Remediation Tasks
+
+**What:** Fix existing non-compliant resources. A `DeployIfNotExists` policy only applies to NEW resources. Remediation task retroactively applies it to EXISTING resources.
+
+---
+
+### Policy Exemptions
+
+**What:** Temporarily exclude a resource from a policy. "This dev VM can have a public IP until March 31st." Exemptions have expiry dates.
+
+---
+
+### Guest Configuration
+
+**What:** Audit settings INSIDE a VM (not just Azure resource properties). Check if Windows Defender is enabled, if password policies are set, if specific software is installed.
+
+---
+
+### Azure Blueprints (Deprecated)
+
+**What:** Bundled ARM templates + policies + RBAC + resource groups into a deployable package. Being replaced by **Deployment Stacks** and **Template Specs**. Don't use for new projects.
+
+---
+
+### Azure Landing Zones
+
+**What:** A pre-configured, best-practice Azure environment. Includes management groups, subscriptions, networking (hub-spoke), policies, and identity. The "foundation" before you deploy workloads.
+
+```
+  ┌─────────────────────────────────────────────────┐
+  │  Azure Landing Zone                             │
+  │                                                 │
+  │  Root MG                                        │
+  │  ├── Platform                                   │
+  │  │   ├── Identity Sub (Entra Connect, AD DS)   │
+  │  │   ├── Connectivity Sub (Hub VNet, Firewall) │
+  │  │   └── Management Sub (Log Analytics, ASR)   │
+  │  └── Workloads                                  │
+  │      ├── Prod Sub (spoke VNet, apps)           │
+  │      └── Dev Sub (spoke VNet, dev apps)        │
+  └─────────────────────────────────────────────────┘
+```
+
+---
+
+### CAF (Cloud Adoption Framework)
+
+**What:** Microsoft's guidance for cloud adoption. Covers strategy, planning, readiness, migration, governance, and management. Landing Zones are the "implement" step.
+
+---
+
+### Azure Cost Management
+
+**What:** Track, analyze, and optimize Azure spending. Cost analysis by resource, tag, subscription. Set budgets with alerts. Identify waste (unused VMs, oversized disks).
+
+---
+
+### Budgets
+
+**What:** Set spending limits with alerts. "Alert me at 80% of $5,000/month. Alert the team at 100%." Budgets don't stop spending — they only alert. Use resource locks or policies to prevent overspend.
+
+---
+
+### Reservations / Savings Plans
+
+| Type | Savings | Commitment |
+|------|---------|-----------|
+| **Reservations** | Up to 72% | Specific VM size + region for 1-3 years |
+| **Savings Plans** | Up to 65% | $/hour commitment for any VM size/region for 1-3 years |
+
+> **FAQ:** *Which to choose?* Reservations = maximum savings if you know exact VM sizes. Savings Plans = flexibility if workloads change.
+
+---
+
+### Spot VMs
+
+**What:** Use Azure's unused capacity at up to 90% discount. Azure can EVICT your VM with 30-second notice when it needs the capacity back. For batch jobs, CI runners, fault-tolerant workloads.
+
+> ⚠️ **Gotcha:** Never run production workloads on Spot VMs. They WILL be evicted. Design for interruption.
+
+---
+
+### Rightsizing
+
+**What:** Match VM sizes to actual usage. A D4s_v3 (4 CPU) running at 10% CPU → downgrade to D2s_v3 (2 CPU). Azure Advisor provides rightsizing recommendations.
+
+---
+
+### FinOps
+
+**What:** Financial Operations — the practice of bringing financial accountability to cloud spending. Combines engineering, finance, and business to optimize cost.
+
+---
+
+### Azure Arc
+
+**What:** Extend Azure management (policies, monitoring, RBAC) to resources OUTSIDE Azure — on-prem servers, other clouds (AWS/GCP), edge devices. Manage everything from one pane.
+
+---
+
+### Azure Migrate
+
+**What:** Hub for migrating on-prem workloads to Azure. Discovery (find servers), assessment (size, cost estimate), migration (replicate and cutover).
+
+---
+
+### Recovery Services Vault
+
+**What:** Container for backup data and ASR replication data. Stores VM backups, SQL backups, file backups. Supports cross-region restore and immutable backups.
+
+---
+
+### Azure Backup
+
+**What:** Managed backup service. Backs up VMs, SQL, Files, Blobs. Scheduled, automated, encrypted. Restore full VM, individual files, or specific DBs.
+
+---
+
+### Azure Site Recovery (ASR)
+
+**What:** Disaster recovery as a service. Continuously replicates VMs to a secondary region. When disaster strikes, failover to the secondary in minutes.
+
+```
+  Normal:    VM runs in East US → replicates to West US (async)
+  Disaster:  East US down → Failover → VM now runs in West US
+  Recovery:  East US back → Failback → VM returns to East US
+```
+
+---
+
+### RPO / RTO
+
+```
+  RPO (Recovery Point Objective) = How much data can you lose?
+  RPO = 15 min → you need backups every 15 min
+
+  RTO (Recovery Time Objective) = How long can you be down?
+  RTO = 1 hour → must be back online within 1 hour
+```
+
+---
+
+### Active-Active / Active-Passive
+
+| Pattern | How it works | RTO |
+|---------|-------------|-----|
+| **Active-Active** | Both regions serve traffic simultaneously. LB distributes. If one fails, the other absorbs all traffic | Near zero |
+| **Active-Passive** | Primary serves traffic. Secondary is standby. On failure, DNS/LB switches to secondary | Minutes |
+
+---
+
+### Event Grid
+
+**What:** Event routing service. When something HAPPENS (blob created, resource changed), Event Grid delivers the event to subscribers (Function, Logic App, webhook) within seconds.
+
+---
+
+### Event Hub
+
+**What:** Big data streaming ingestion. Millions of events/second. For telemetry, IoT, clickstream data. Like Apache Kafka in Azure.
+
+---
+
+### Service Bus
+
+**What:** Enterprise message broker. Queues (point-to-point) and Topics (pub-sub). Supports ordering, deduplication, sessions, dead-letter queues. More features than Queue Storage.
+
+```
+  Queue Storage:  Simple, cheap, 64KB messages
+  Service Bus:    Enterprise, sessions, ordering, 256KB-100MB messages
+  Event Grid:     Event notification (react to things that happened)
+  Event Hub:      Streaming ingestion (millions of events/sec)
+```
+
+---
+
+### Azure Service Health / Resource Health
+
+| Service | What it shows |
+|---------|--------------|
+| **Service Health** | Azure-wide outages, planned maintenance, health advisories affecting your resources |
+| **Resource Health** | Status of YOUR specific resources — is this VM running? Is this SQL DB available? |
+
+---
+
+### Activity Logs
+
+**What:** Audit log of ALL control-plane operations in your subscription. Who created what, who deleted what, who changed RBAC. Retained for 90 days. Send to Log Analytics for longer retention.
+
+---
+
+### Azure Resource Graph
+
+**What:** Query engine for ALL your Azure resources across ALL subscriptions. Instantly answer "How many VMs are running?" or "Which storage accounts allow public access?" using KQL-like queries.
+
+---
+
+# 16 — Advanced Networking & Protocols
+
+---
+
+### TCP 3-Way Handshake
+
+**What:** How two machines establish a TCP connection before exchanging data. Three packets: SYN → SYN-ACK → ACK.
+
+```
+  Client                  Server
+    │  SYN (seq=100)        │
+    │──────────────────────►│
+    │                       │
+    │  SYN-ACK (seq=200,    │
+    │  ack=101)             │
+    │◄──────────────────────│
+    │                       │
+    │  ACK (ack=201)        │
+    │──────────────────────►│
+    │                       │
+    │  Connection established│
+```
+
+> ⚠️ **Gotcha:** SYN flood attack = attacker sends thousands of SYNs without completing the handshake, exhausting server resources. Azure DDoS Protection mitigates this.
+
+---
+
+### TCP Window Size / Flow Control
+
+**What:** The receiver advertises how much data it can accept before the sender must wait for an ACK. Larger window = higher throughput. TCP window scaling enables windows up to 1 GB.
+
+---
+
+### TCP Keep-Alive
+
+**What:** Periodic packets sent on idle connections to confirm the other side is still alive. Azure Load Balancer has a 4-minute idle timeout by default — enable TCP keep-alive or increase timeout to prevent dropped connections.
+
+> ⚠️ **Gotcha:** Azure LB kills idle TCP connections after 4 minutes. For long-running connections (WebSockets, database pools), set `IdleTimeoutInMinutes: 30` or enable keep-alives.
+
+---
+
+### TLS Handshake
+
+**What:** Establishes an encrypted HTTPS connection. Happens AFTER the TCP handshake. Negotiates cipher suite, exchanges certificates, generates session keys.
+
+```
+  Client                           Server
+    │  ClientHello (TLS versions,   │
+    │  cipher suites)               │
+    │──────────────────────────────►│
+    │                               │
+    │  ServerHello + Certificate    │
+    │  + server key exchange        │
+    │◄──────────────────────────────│
+    │                               │
+    │  Client verifies certificate  │
+    │  Client key exchange          │
+    │──────────────────────────────►│
+    │                               │
+    │  Both derive session keys     │
+    │  Encrypted communication ✓    │
+```
+
+---
+
+### TLS Versions
+
+| Version | Status |
+|---------|--------|
+| TLS 1.0 / 1.1 | Deprecated. Disable everywhere |
+| **TLS 1.2** | Current standard. Minimum for Azure services |
+| **TLS 1.3** | Latest. Faster handshake (1 round trip). Most secure |
+
+---
+
+### mTLS (Mutual TLS)
+
+**What:** BOTH sides present certificates. Normal TLS = only server proves identity. mTLS = client AND server prove identity. Used for service-to-service communication in zero-trust environments.
+
+```
+  Normal TLS:  Client verifies server certificate  (one-way)
+  mTLS:        Client verifies server certificate
+               Server verifies client certificate   (two-way)
+```
+
+**DevOps example:** Service mesh (Istio) uses mTLS between all pods. Each pod has a certificate. Any unauthorized service is rejected.
+
+---
+
+### SNI (Server Name Indication)
+
+**What:** TLS extension that tells the server WHICH hostname the client wants to connect to. Allows multiple HTTPS sites on one IP address.
+
+**Plain English:** Without SNI, one IP = one certificate. With SNI, one IP can serve `api.myapp.com`, `admin.myapp.com`, and `docs.myapp.com` each with their own cert.
+
+---
+
+### Certificates
+
+**What:** Digital documents that bind a public key to an identity (domain name, organization). Used for TLS/HTTPS, code signing, and client authentication.
+
+---
+
+### Certificate Authority (CA)
+
+**What:** A trusted organization that issues certificates. Browsers trust CAs → CAs sign your certificate → browsers trust your site.
+
+```
+  Public CAs:   DigiCert, Let's Encrypt, GlobalSign
+  Private CAs:  Your org's internal CA (AD CS) for internal services
+```
+
+---
+
+### CSR (Certificate Signing Request)
+
+**What:** A file you generate containing your public key and domain name. You send the CSR to a CA → CA verifies you own the domain → CA returns a signed certificate.
+
+---
+
+### SAN (Subject Alternative Name)
+
+**What:** A certificate field listing all domain names the cert is valid for. One cert for multiple domains: `myapp.com`, `api.myapp.com`, `www.myapp.com`.
+
+---
+
+### Wildcard Certificate
+
+**What:** One cert valid for all subdomains: `*.myapp.com` covers `api.myapp.com`, `www.myapp.com`, `admin.myapp.com`. Does NOT cover `myapp.com` itself (add it as a SAN).
+
+> ⚠️ **Gotcha:** Wildcard certs only cover ONE level. `*.myapp.com` covers `api.myapp.com` but NOT `v2.api.myapp.com`.
+
+---
+
+### Certificate Pinning
+
+**What:** Your app only trusts a SPECIFIC certificate (not any cert from any CA). Prevents man-in-the-middle attacks even if a CA is compromised. Hard to manage — rotate carefully.
+
+---
+
+### OCSP (Online Certificate Status Protocol)
+
+**What:** Real-time check: "Is this certificate still valid or has it been revoked?" Browser asks the CA's OCSP responder before trusting a certificate.
+
+---
+
+### HSTS (HTTP Strict Transport Security)
+
+**What:** HTTP header that tells browsers to ONLY use HTTPS for this domain. Prevents downgrade attacks (user types http:// → browser auto-upgrades to https://).
+
+---
+
+### IPSec
+
+**What:** Protocol suite for encrypting IP traffic. Used by VPN Gateway for S2S and VNet-to-VNet tunnels. Two modes:
+
+| Mode | What it encrypts |
+|------|-----------------|
+| **Transport** | Only the payload (data). IP header is visible |
+| **Tunnel** | Entire original packet (header + data). Wrapped in new IP header |
+
+---
+
+### IKE (Internet Key Exchange)
+
+**What:** Protocol that negotiates the encryption keys for IPSec tunnels. IKEv2 is faster and more reliable than IKEv1. Azure VPN Gateway supports both.
+
+---
+
+### NAT-T (NAT Traversal)
+
+**What:** Wraps IPSec packets in UDP (port 4500) so they can pass through NAT devices. Without NAT-T, IPSec packets get dropped by firewalls doing NAT.
+
+---
+
+### VXLAN (Virtual Extensible LAN)
+
+**What:** Network overlay protocol that encapsulates Layer 2 frames inside UDP packets. Enables millions of virtual networks (16M IDs vs VLAN's 4096). Used by Azure's SDN fabric under the hood.
+
+```
+  Original frame → VXLAN header (VNI) → UDP → Outer IP → Wire
+  
+  VM-A (VNet-1) sends frame → Azure SDN encapsulates in VXLAN
+  → travels across physical network → decapsulated at destination host
+  → delivered to VM-B (VNet-1)
+```
+
+---
+
+### Overlay Networking (Protocol Context)
+
+**What:** A virtual network built on top of the physical network using encapsulation (VXLAN, GENEVE, GRE). Azure VNets, K8s pod networks, and NVAs all use overlays.
+
+---
+
+### MTU (Maximum Transmission Unit)
+
+**What:** Maximum packet size (in bytes) that a network link can carry. Standard = 1500 bytes. VPN/VXLAN overhead reduces effective MTU. Mismatched MTU = dropped/fragmented packets.
+
+> ⚠️ **Gotcha:** VPN tunnels reduce MTU to ~1400 bytes. If your app sends 1500-byte packets through a VPN, they get fragmented or dropped. Set MSS clamping or reduce app MTU.
+
+---
+
+### Fragmentation
+
+**What:** Breaking a large packet into smaller pieces when it exceeds the MTU. The receiver reassembles fragments. Fragmentation hurts performance — avoid it by setting correct MTU.
+
+---
+
+### Jumbo Frames
+
+**What:** Frames with MTU > 1500 bytes (typically 9000 bytes). Higher throughput for large data transfers. Azure VMs support up to 9000-byte MTU within the same VNet.
+
+---
+
+# 17 — Advanced Compute, Patterns & Caching
+
+---
+
+### Circuit Breaker Pattern
+
+**What:** Prevents cascading failures. If a downstream service fails repeatedly, the circuit breaker "opens" and immediately returns errors WITHOUT calling the failing service. After a timeout, it "half-opens" to test recovery.
+
+```
+  States:
+  CLOSED → calls flow normally
+     │ (failures exceed threshold)
+     ▼
+  OPEN → all calls fail immediately (fast fail)
+     │ (timeout expires)
+     ▼
+  HALF-OPEN → allow one test call
+     │ success → CLOSED
+     │ failure → OPEN again
+```
+
+**DevOps example:** Your API calls a payment service. Payment service goes down. Without circuit breaker → all API threads hang waiting → your API dies too. With circuit breaker → fast fail, users see "try later."
+
+---
+
+### Retry Pattern
+
+**What:** Automatically retry failed operations with increasing delays. Handles transient faults (network blip, throttling).
+
+```
+  Attempt 1: fail → wait 1s
+  Attempt 2: fail → wait 2s
+  Attempt 3: fail → wait 4s  (exponential backoff)
+  Attempt 4: fail → give up, return error
+```
+
+> ⚠️ **Gotcha:** Always use exponential backoff with jitter (random delay). Without jitter, all clients retry at the same time → thundering herd → service crashes again.
+
+---
+
+### Bulkhead Pattern
+
+**What:** Isolate components into separate pools so a failure in one doesn't exhaust resources for all. Like watertight compartments in a ship — one floods, the others stay dry.
+
+**DevOps example:** Separate thread pools for critical API (payment) and non-critical API (recommendations). If recommendations hangs, payment still works.
+
+---
+
+### Saga Pattern
+
+**What:** Manage distributed transactions across microservices using a sequence of local transactions. Each step has a compensating action (undo) if a later step fails.
+
+```
+  Order Service → Payment Service → Inventory Service
+       │                │                │
+  If Inventory fails:   │                │
+       │                │       compensate: refund payment
+       │           compensate: cancel order
+```
+
+---
+
+### CQRS (Command Query Responsibility Segregation)
+
+**What:** Separate read and write models. Write operations go to a write-optimized store. Read operations go to a read-optimized store (denormalized, cached).
+
+```
+  Commands (writes) → Write DB (normalized, ACID)
+                          │ (sync/async)
+                          ▼
+  Queries (reads) ← Read DB (denormalized, fast)
+```
+
+---
+
+### Strangler Fig Pattern
+
+**What:** Gradually replace a legacy monolith by routing traffic to new microservices, one feature at a time. The new system "strangles" the old one until nothing is left.
+
+```
+  Phase 1: 100% → Monolith
+  Phase 2: /api/orders → New Service, everything else → Monolith
+  Phase 3: /api/users → New Service, /api/orders → New Service
+  Phase N: 0% → Monolith (decommissioned)
+```
+
+---
+
+### Ambassador Pattern
+
+**What:** A proxy sidecar that handles cross-cutting network concerns (retries, circuit breaking, TLS) on behalf of the main service. The app code stays simple.
+
+---
+
+### Throttling / Rate Limiting
+
+**What:** Limit how many requests a client can make in a time window. "Max 100 requests per minute per API key." Prevents abuse and protects backend resources.
+
+```
+  Client sends request #101 in 1 minute:
+  → HTTP 429 Too Many Requests
+  → Retry-After: 30 (seconds)
+```
+
+---
+
+### Cache-Aside Pattern
+
+**What:** App checks cache first. If miss → read from DB → store in cache → return. Next request hits cache (fast). The app manages the cache, not the DB.
+
+```
+  Request → Cache hit?
+            ├── YES → return cached data (fast)
+            └── NO → read from DB → store in cache → return
+```
+
+---
+
+### Azure Cache for Redis
+
+**What:** Managed Redis instance. In-memory key-value store for caching, session state, pub/sub, and leaderboards. Sub-millisecond response times.
+
+**DevOps example:** Cache database query results in Redis. First request = 200ms (DB). Subsequent requests = 2ms (Redis). 100× faster.
+
+> ⚠️ **Gotcha:** Redis is in-memory — data is lost if the node restarts (unless using Premium tier with persistence). Design for cache invalidation.
+
+---
+
+### CDN (Content Delivery Network)
+
+**What:** Cache static content (images, JS, CSS) at edge locations worldwide. Users download from the nearest edge server, not your origin server.
+
+```
+  Without CDN: User in Tokyo → downloads from US origin (200ms)
+  With CDN:    User in Tokyo → downloads from Tokyo edge (20ms)
+```
+
+---
+
+### Horizontal Scaling (Scale Out)
+
+**What:** Add MORE machines to handle increased load. 2 VMs → 10 VMs. Requires stateless application design. Preferred for cloud-native apps.
+
+---
+
+### Vertical Scaling (Scale Up)
+
+**What:** Make the EXISTING machine bigger. 2 CPU → 8 CPU. Limited by the largest available VM size. Requires downtime to resize. Hits a ceiling.
+
+```
+  Scale Out:  ■ ■ → ■ ■ ■ ■ ■ ■  (more machines)
+  Scale Up:   ■ → ■■■■           (bigger machine)
+```
+
+---
+
+### Scale Unit Architecture
+
+**What:** Design your system as repeatable "units" that can be stamped out. Each unit contains a complete set of resources (VMs, DB, storage). Scale by deploying more units.
+
+---
+
+### Geo-Replication (Database)
+
+**What:** Replicate your database to other Azure regions. Active geo-replication (Azure SQL) creates readable secondaries. Failover in seconds.
+
+---
+
+### Connection Pooling
+
+**What:** Reuse existing database connections instead of creating a new one for each request. A pool of pre-opened connections is shared across requests.
+
+> ⚠️ **Gotcha:** Creating a new SQL connection takes ~50ms. Connection pooling reduces this to ~0ms. Always enable pooling. Common issue: .NET apps NOT disposing SqlConnection properly → pool exhaustion.
+
+---
+
+### Backpressure
+
+**What:** When a system is overloaded, it signals upstream to SLOW DOWN instead of accepting everything and crashing. Queues filling up → producer is told to wait.
+
+---
+
+### Idempotency (Patterns Context)
+
+**What:** An operation that produces the same result even if executed multiple times. Critical for retries — if a payment request is retried, it should charge ONCE, not twice.
+
+**Implementation:** Use idempotency keys. Client sends `Idempotency-Key: abc123`. Server checks if `abc123` was already processed → returns cached result instead of processing again.
+
+---
+
+### Eventual Consistency
+
+**What:** After a write, all replicas will EVENTUALLY have the same data, but not immediately. Reads might return stale data briefly. Most distributed systems use this.
+
+```
+  Write to primary → primary returns success
+  → async replication to replicas (1-5 seconds)
+  → during those seconds, reads from replicas return OLD data
+  → eventually, all replicas have the new data
+```
+
+---
+
+### Distributed Locking
+
+**What:** Ensure only ONE instance of an application performs a critical operation at a time, across multiple servers. Use Redis SETNX, Azure Blob leases, or Cosmos DB stored procedures.
+
+> ⚠️ **Gotcha:** Distributed locks are hard to get right. Watch for lock expiry (process takes longer than lock TTL → two processes run simultaneously). Use fencing tokens.
+
+---
+
+# 18 — AD DS Fundamentals
+
+---
+
+### Active Directory Domain Services (AD DS)
+
+**What:** Microsoft's on-prem directory service. Stores user accounts, computer objects, groups, and policies. Provides authentication (Kerberos/NTLM) and authorization for Windows environments. The foundation of enterprise identity since Windows 2000.
+
+```
+  ┌──────────────────────────────────────────────┐
+  │  AD DS                                       │
+  │                                              │
+  │  What it stores:                             │
+  │  • Users (john.doe@corp.local)               │
+  │  • Computers (WS-JOHN, SRV-SQL01)           │
+  │  • Groups (IT-Admins, HR-Users)              │
+  │  • GPOs (Password Policy, Desktop Lockdown)  │
+  │                                              │
+  │  What it does:                               │
+  │  • Authenticates users (Kerberos/NTLM)       │
+  │  • Authorizes access (ACLs, group membership)│
+  │  • Distributes policies (GPO)                │
+  └──────────────────────────────────────────────┘
+```
+
+---
+
+### Domain Controller (DC)
+
+**What:** A server running AD DS that stores a writable copy of the directory database (NTDS.dit). Handles authentication requests. Every domain needs at least 2 DCs for redundancy.
+
+> ⚠️ **Gotcha:** DCs should NEVER run other workloads (no SQL Server, no IIS). They should be dedicated, hardened servers. Losing all DCs = entire domain is dead.
+
+---
+
+### Forest
+
+**What:** The top-level container in AD DS. The ULTIMATE security boundary. A forest contains one or more domains that share a common schema and Global Catalog. Trusts between forests are explicit.
+
+```
+  Forest: corp.com
+  ├── Domain: corp.com (root domain)
+  ├── Domain: us.corp.com (child domain)
+  └── Domain: eu.corp.com (child domain)
+  
+  Forest: partner.com (separate forest, separate security)
+```
+
+---
+
+### Domain
+
+**What:** A logical boundary for administration, authentication, and policy. All objects (users, computers, groups) belong to a domain. Domains share a common namespace (corp.com, us.corp.com).
+
+---
+
+### Tree
+
+**What:** A hierarchy of domains sharing a contiguous namespace. `corp.com` → `us.corp.com` → `ny.us.corp.com`. Parent-child trust is automatically created between tree domains.
+
+---
+
+### Organizational Unit (OU)
+
+**What:** A container inside a domain to organize objects (users, computers, groups). OUs are used for delegating administration and applying GPOs.
+
+```
+  corp.com (domain)
+  ├── OU: IT Department
+  │   ├── OU: Servers
+  │   │   ├── SRV-SQL01
+  │   │   └── SRV-WEB01
+  │   └── OU: Admins
+  │       ├── john.admin
+  │       └── jane.admin
+  ├── OU: HR Department
+  │   └── OU: Users
+  │       ├── bob.hr
+  │       └── alice.hr
+  └── OU: Workstations
+      ├── WS-BOB
+      └── WS-ALICE
+```
+
+> **FAQ:** *OU vs Group?* OUs organize objects for MANAGEMENT (GPOs, delegation). Groups organize objects for ACCESS (permissions, email).
+
+---
+
+### FSMO Roles (Flexible Single Master Operations)
+
+**What:** Five special roles that only ONE DC holds at a time. Most AD operations are multi-master (any DC can handle them), but these five require a single authoritative source.
+
+| Role | Scope | What it does |
+|------|-------|-------------|
+| **Schema Master** | 1 per forest | Controls schema changes (adding attributes) |
+| **Domain Naming Master** | 1 per forest | Controls adding/removing domains |
+| **PDC Emulator** | 1 per domain | Password changes, time sync, GPO, lockout |
+| **RID Master** | 1 per domain | Allocates unique ID pools to DCs |
+| **Infrastructure Master** | 1 per domain | Resolves cross-domain object references |
+
+> ⚠️ **Gotcha:** PDC Emulator is the most critical. If it's down: password changes fail, account lockouts don't process, time drifts. Monitor it closely.
+
+---
+
+### Domain Join
+
+**What:** Adding a computer to an Active Directory domain. The computer creates an account in AD (computer object), gets a machine password, and can authenticate users via Kerberos.
+
+```
+  Before domain join: Standalone PC. Local accounts only.
+  After domain join:  PC is managed by AD. Domain users can log in.
+                      GPOs apply. Kerberos works. Centralized management.
+```
+
+---
+
+### Computer Objects
+
+**What:** AD objects representing machines joined to the domain. Each has a machine account (SRV-SQL01$) and a password that auto-rotates every 30 days. Used for machine-to-machine authentication.
+
+---
+
+### AD Sites
+
+**What:** Represent physical network locations (offices, data centers). AD uses sites to optimize replication traffic and help clients find the nearest DC.
+
+```
+  Site: New York Office (subnet 10.0.1.0/24)
+  ├── DC: DC-NY01
+  └── DC: DC-NY02
+
+  Site: London Office (subnet 10.0.2.0/24)
+  ├── DC: DC-LDN01
+  └── DC: DC-LDN02
+
+  Users in 10.0.1.0/24 → authenticate to DC-NY01/02 (local)
+  NOT DC-LDN01 (across the WAN)
+```
+
+---
+
+### AD Subnets
+
+**What:** Map IP subnets to AD Sites. When a computer starts, it checks its IP → matches to a subnet → finds its site → finds the nearest DCs. Without subnet mappings, clients pick random DCs.
+
+---
+
+### Site Links
+
+**What:** Define replication paths between AD Sites. Control replication schedule (e.g., every 180 minutes) and cost (prefer cheaper links). ISTG (Inter-Site Topology Generator) uses site links to build replication topology.
+
+---
+
+### AD Schema
+
+**What:** The blueprint defining what object types (user, computer, group) and attributes (firstName, email, phoneNumber) exist in AD. Schema is forest-wide — one change affects ALL domains.
+
+> ⚠️ **Gotcha:** Schema changes are IRREVERSIBLE. You can deactivate attributes but never delete them. Test schema changes in a lab forest first.
+
+---
+
+### Global Catalog (GC)
+
+**What:** A DC that stores a PARTIAL, read-only copy of ALL objects in ALL domains in the forest. Enables cross-domain searches (find a user in any domain) and Universal Group membership resolution.
+
+---
+
+### Forest / Domain Functional Level
+
+**What:** Determines which AD DS features are available. Higher levels enable newer features but require ALL DCs to run a minimum Windows Server version. Cannot be downgraded.
+
+```
+  Functional Level → Minimum DC OS required:
+  2016 → Windows Server 2016+
+  2019 → Windows Server 2019+ (adds Entra hybrid features)
+  2025 → Windows Server 2025+ (latest)
+```
+
+---
+
+### AD Recycle Bin
+
+**What:** Recover accidentally deleted AD objects (users, OUs, groups) with ALL attributes intact. Must be enabled (off by default). Requires Forest Functional Level 2008 R2+.
+
+**DevOps example:** Someone deletes the "IT-Admins" group. Without Recycle Bin: recreate from scratch, re-add all members, re-apply permissions. With Recycle Bin: restore in 30 seconds, everything intact.
+
+---
+
+### Distinguished Name (DN) / RDN
+
+**What:** The full path to an object in AD. Like a file path but in LDAP format.
+
+```
+  DN:  CN=John Doe,OU=Users,OU=IT,DC=corp,DC=com
+  RDN: CN=John Doe (just the object's own name)
+
+  CN = Common Name
+  OU = Organizational Unit
+  DC = Domain Component
+```
+
+---
+
+### AD DS on Azure VMs
+
+**What:** Run Domain Controllers as Azure VMs for hybrid or cloud-only AD DS. Place DCs in an Availability Set or across Availability Zones. Use Managed Disks with write caching disabled for NTDS.dit.
+
+> ⚠️ **Gotcha:** NEVER snapshot or restore AD DS VMs from backup without proper procedures — it causes USN rollback (replication corruption). Use Windows Server Backup, not Azure VM snapshots.
+
+---
+
+### Entra Domain Services (Managed AD DS)
+
+**What:** Microsoft-managed AD DS in Azure. Provides domain join, LDAP, Kerberos, NTLM WITHOUT managing DCs yourself. Objects sync FROM Entra ID (one-way). For legacy apps that need AD protocols.
+
+```
+  Entra ID → syncs users/groups → Entra Domain Services
+  Legacy app authenticates via LDAP/Kerberos ✓
+  No DCs to manage ✓
+  Can't extend schema or create trusts ✗
+```
+
+---
+
+# 19 — AD Auth, GPO & Replication
+
+---
+
+### Kerberos Authentication
+
+**What:** The PRIMARY authentication protocol in AD. Ticket-based — user proves identity once, gets tickets to access services without re-entering passwords. Uses symmetric key encryption.
+
+```
+  ┌────────────────────────────────────────────────┐
+  │  Kerberos Flow (simplified)                    │
+  │                                                │
+  │  1. User logs in → sends credentials to DC     │
+  │                                                │
+  │  2. DC returns TGT (Ticket Granting Ticket)    │
+  │     (proof: "you ARE john.doe")                │
+  │                                                │
+  │  3. User wants to access file server           │
+  │     → sends TGT to DC, asks for service ticket │
+  │                                                │
+  │  4. DC returns Service Ticket for file server   │
+  │                                                │
+  │  5. User presents Service Ticket to file server │
+  │     → file server validates → access granted   │
+  │                                                │
+  │  No password sent to file server! Just tickets. │
+  └────────────────────────────────────────────────┘
+```
+
+> ⚠️ **Gotcha:** Kerberos requires TIME SYNC (max 5-minute skew between client and DC). If time drifts, Kerberos fails and falls back to NTLM. PDC Emulator is the time authority.
+
+---
+
+### TGT (Ticket Granting Ticket)
+
+**What:** Your "master ticket" after logging in. Valid for 10 hours by default. Used to REQUEST service tickets without re-entering your password. Cached locally on your machine.
+
+---
+
+### Service Ticket (TGS)
+
+**What:** A ticket for a SPECIFIC service (file share, SQL, web app). Obtained by presenting your TGT to the DC. Contains your identity and permissions. Valid for 10 hours.
+
+---
+
+### SPN (Service Principal Name)
+
+**What:** A unique identifier for a service instance in AD. Kerberos uses SPNs to find which account runs a service. Format: `service/hostname:port`.
+
+```
+  Examples:
+  MSSQLSvc/SQL01.corp.com:1433     (SQL Server)
+  HTTP/webapp.corp.com              (IIS web app)
+  HOST/DC01.corp.com               (domain controller)
+```
+
+> ⚠️ **Gotcha:** Duplicate SPNs break Kerberos authentication. Use `setspn -X` to check for duplicates. Missing SPNs force NTLM fallback.
+
+---
+
+### Kerberos Delegation
+
+**What:** Allows a service to impersonate a user and access another service on their behalf. Web server accesses SQL "as" the logged-in user.
+
+| Type | Risk level |
+|------|-----------|
+| **Unconstrained** | Service can impersonate user to ANY service. DANGEROUS |
+| **Constrained** | Service can only impersonate to SPECIFIC services |
+| **Resource-Based** | The TARGET resource controls who can delegate to it (preferred) |
+
+---
+
+### NTLM Authentication
+
+**What:** Older, challenge-response authentication. No tickets. Server sends a challenge → client encrypts it with password hash → server verifies. Slower and less secure than Kerberos.
+
+```
+  NTLM is used when:
+  • Kerberos is unavailable (no DC contact, time skew)
+  • Connecting by IP address instead of hostname
+  • Legacy applications that don't support Kerberos
+  • Cross-forest without proper trust configuration
+```
+
+> ⚠️ **Gotcha:** NTLM is vulnerable to relay attacks and pass-the-hash. Disable NTLMv1 everywhere. Audit NTLMv2 usage and work toward eliminating NTLM entirely.
+
+---
+
+### LDAP (Lightweight Directory Access Protocol)
+
+**What:** The protocol for QUERYING and MODIFYING AD. Applications use LDAP to search for users, read attributes, reset passwords. Port 389 (unencrypted) or 636 (LDAPS = LDAP over TLS).
+
+```
+  LDAP query: "Find all users in the IT OU"
+  (&(objectClass=user)(memberOf=CN=IT-Users,OU=Groups,DC=corp,DC=com))
+```
+
+---
+
+### LDAPS (LDAP Secure)
+
+**What:** LDAP encrypted with TLS (port 636). Requires a certificate on the DC. Microsoft is deprecating unencrypted LDAP (port 389) — migrate to LDAPS or LDAP channel binding.
+
+---
+
+### SAML (Security Assertion Markup Language)
+
+**What:** XML-based protocol for SSO between identity providers and applications. ADFS issues SAML tokens. Being replaced by OAuth2/OIDC in modern apps, but still used by many enterprise SaaS apps.
+
+---
+
+### GPO (Group Policy Object)
+
+**What:** A set of rules/settings applied to users and computers in an OU. Controls everything: password policies, desktop wallpaper, software installation, firewall rules, drive mappings.
+
+```
+  ┌──────────────────────────────────────────────┐
+  │  GPO: "Workstation Security"                 │
+  │                                              │
+  │  Computer Settings:                          │
+  │  • Disable USB storage                       │
+  │  • Enable Windows Firewall                   │
+  │  • Set screen lock to 5 minutes              │
+  │                                              │
+  │  User Settings:                              │
+  │  • Map H: drive to \\fileserver\home$        │
+  │  • Set default browser to Edge               │
+  │  • Remove Control Panel access               │
+  │                                              │
+  │  Linked to: OU=Workstations,DC=corp,DC=com  │
+  └──────────────────────────────────────────────┘
+```
+
+---
+
+### GPO Processing Order
+
+**What:** GPOs are applied in a specific order. Last applied wins (most specific overrides).
+
+```
+  L → S → D → OU  (order of application)
+  
+  Local policy (on the machine itself)
+  → Site policy (AD Site)
+  → Domain policy (corp.com)
+  → OU policy (OU=Workstations)
+  → Child OU policy (OU=IT under Workstations)
+  
+  The LAST policy applied WINS for conflicting settings.
+```
+
+---
+
+### GPO Inheritance / Blocking / Enforcement
+
+| Feature | What it does |
+|---------|-------------|
+| **Inheritance** | Child OUs automatically inherit parent OU's GPOs |
+| **Block Inheritance** | Child OU blocks ALL GPOs from parent (nuclear option) |
+| **Enforced** | Parent GPO CANNOT be blocked — overrides block inheritance |
+
+---
+
+### WMI Filters
+
+**What:** Apply a GPO only to machines matching a WMI query. "Apply this GPO only to laptops" or "only to machines with >8GB RAM."
+
+```
+  SELECT * FROM Win32_Battery  → filters to laptops only
+  SELECT * FROM Win32_OperatingSystem WHERE Version LIKE "10.%" → Win10 only
+```
+
+---
+
+### Loopback Processing
+
+**What:** Apply USER settings based on the COMPUTER's OU instead of the user's OU. Used for kiosk/terminal servers where you want all users to get the same experience.
+
+---
+
+### SYSVOL
+
+**What:** A shared folder on every DC that stores GPO files, logon scripts, and policies. Replicated between all DCs using DFS-R. Path: `\\corp.com\SYSVOL\corp.com\`.
+
+> ⚠️ **Gotcha:** If SYSVOL replication breaks, GPOs stop updating across DCs. Run `dcdiag /test:sysvolcheck` and check DFS-R event logs.
+
+---
+
+### DFS-R (Distributed File System Replication)
+
+**What:** Replicates SYSVOL and other shared folders between DCs. Uses delta compression (only sends changed blocks, not entire files). Replaced FRS (File Replication Service).
+
+---
+
+### AD Replication
+
+**What:** The process of synchronizing directory changes between DCs. Multi-master — any DC can accept writes and replicate to others. Uses USN (Update Sequence Numbers) to track changes.
+
+```
+  DC-01: User john.doe password changed (USN 5001)
+     │
+     ▼ replication
+  DC-02: Receives change, updates local copy (USN 5001)
+     │
+     ▼ replication
+  DC-03: Receives change, updates local copy (USN 5001)
+```
+
+---
+
+### USN (Update Sequence Number)
+
+**What:** A counter on each DC that increments with every change. Used to track which changes have been replicated. USN rollback (counter goes backwards) = CRITICAL error that corrupts replication.
+
+---
+
+### KCC (Knowledge Consistency Checker)
+
+**What:** An AD process that automatically builds the replication topology. Creates connection objects between DCs to ensure efficient replication. Runs every 15 minutes.
+
+---
+
+### AD-Integrated DNS
+
+**What:** DNS zones stored IN Active Directory instead of in flat files. Benefits: automatic replication to all DCs, secure dynamic updates, no separate DNS replication to manage.
+
+```
+  Standard DNS:  Zone stored in file → replicated separately
+  AD-Integrated: Zone stored in AD → replicated with AD replication
+                 Secure dynamic updates (only domain members can register)
+```
+
+---
+
+### SRV Records (AD DNS)
+
+**What:** DNS records that tell clients WHERE to find AD services. Clients query DNS to find DCs, Kerberos, LDAP, and Global Catalog servers.
+
+```
+  _ldap._tcp.corp.com       → DC01.corp.com, DC02.corp.com
+  _kerberos._tcp.corp.com   → DC01.corp.com, DC02.corp.com
+  _gc._tcp.corp.com         → DC01.corp.com (Global Catalog)
+  
+  Without these SRV records, clients can't find DCs → login fails.
+```
+
+---
+
+# 20 — Hybrid Identity & Federation
+
+---
+
+### Entra Connect (formerly Azure AD Connect)
+
+**What:** Syncs on-prem AD DS users, groups, and passwords to Entra ID. Runs on a Windows Server in your on-prem environment. The bridge between on-prem AD and cloud identity.
+
+```
+  ┌──────────────┐    sync every    ┌──────────────┐
+  │ On-Prem AD   │ ═══30 minutes═══►│ Entra ID     │
+  │              │                   │              │
+  │ john.doe     │    ──────────►   │ john.doe     │
+  │ jane.admin   │    ──────────►   │ jane.admin   │
+  │ IT-Admins    │    ──────────►   │ IT-Admins    │
+  └──────────────┘    (one-way)     └──────────────┘
+```
+
+---
+
+### Entra Cloud Sync
+
+**What:** Lightweight alternative to Entra Connect. Uses a small agent (no full server). Supports multi-forest scenarios. Less features than Entra Connect but simpler to deploy.
+
+| Feature | Entra Connect | Cloud Sync |
+|---------|--------------|------------|
+| Agent | Full server install | Lightweight agent |
+| Multi-forest | Manual config | Native support |
+| Writeback | Password, group, device | Password only |
+| Exchange hybrid | Full support | Limited |
+
+---
+
+### Password Hash Sync (PHS)
+
+**What:** Hashes of on-prem password hashes are synced to Entra ID. Users log in to cloud services using the same password. Authentication happens IN THE CLOUD — no dependency on on-prem infrastructure.
+
+```
+  User logs into M365:
+  → Entra ID checks password hash locally
+  → No call to on-prem needed
+  → Works even if on-prem is down ✓
+```
+
+> **FAQ:** *Is PHS secure?* Yes. The hash is re-hashed (hash of a hash). Microsoft can't reverse it. PHS also enables leaked credential detection.
+
+---
+
+### Pass-Through Authentication (PTA)
+
+**What:** Authentication requests are forwarded to on-prem AD in real-time. Password is NEVER stored in the cloud. On-prem AD validates the password and returns the result.
+
+```
+  User logs into M365:
+  → Entra ID forwards auth request → PTA Agent (on-prem)
+  → PTA Agent validates against AD DS
+  → Returns success/fail to Entra ID
+  
+  ⚠️ If on-prem is down → authentication FAILS
+```
+
+---
+
+### Federation (ADFS)
+
+**What:** On-prem ADFS (Active Directory Federation Services) handles ALL authentication. Entra ID redirects login requests to your ADFS server. Most complex option — requires ADFS infrastructure (servers, certs, WAP).
+
+```
+  PHS:        Cloud validates password (simplest, recommended)
+  PTA:        On-prem validates password (real-time, no cloud storage)
+  Federation: On-prem ADFS handles everything (most complex)
+```
+
+> ⚠️ **Gotcha:** Microsoft recommends PHS as PRIMARY method. It's the most resilient (works when on-prem is down) and enables leaked credential detection.
+
+---
+
+### Seamless SSO
+
+**What:** Users on domain-joined machines signed into AD are automatically signed into Entra ID without entering credentials again. Works with PHS and PTA. Uses Kerberos tickets.
+
+**User experience:** Open browser → navigate to M365 → automatically logged in. No username/password prompt.
+
+---
+
+### Hybrid Entra Join
+
+**What:** Devices registered in BOTH on-prem AD and Entra ID. The device has a computer object in AD AND a device object in Entra ID. Required for Conditional Access policies that check device compliance.
+
+```
+  Device identity options:
+  ┌────────────────────┬─────────────────────────────────┐
+  │ Type               │ Registered in                   │
+  ├────────────────────┼─────────────────────────────────┤
+  │ Entra Registered   │ Entra ID only (BYOD)           │
+  │ Entra Joined       │ Entra ID only (cloud-native)   │
+  │ Hybrid Entra Joined│ AD DS + Entra ID (hybrid orgs) │
+  └────────────────────┴─────────────────────────────────┘
+```
+
+---
+
+### Device Registration
+
+**What:** The process of adding a device to Entra ID. Registered devices get a device identity (certificate), enabling Conditional Access policies to verify device health and compliance.
+
+---
+
+### Cloud Kerberos Trust
+
+**What:** Enables passwordless sign-in (WHfB) for Hybrid Entra Joined devices WITHOUT deploying PKI or key trust infrastructure. Uses Entra ID as the Kerberos trust anchor.
+
+---
+
+### Entra B2B (Business-to-Business)
+
+**What:** Invite external users (partners, vendors) to access your Azure resources and apps. They use THEIR OWN identity (their company's Entra ID, Google, etc.). You control what they can access.
+
+**DevOps example:** A contractor needs access to your Azure DevOps project. Invite them as a B2B guest → they log in with their company email → access only the repos you assign.
+
+---
+
+### Entra B2C (Business-to-Consumer)
+
+**What:** Identity platform for YOUR customers. Build custom sign-up/sign-in flows for your app. Supports social logins (Google, Facebook, Apple), local accounts, and custom policies.
+
+```
+  B2B = invite external BUSINESS users (partners, vendors)
+  B2C = build login for your app's END USERS (customers)
+```
+
+---
+
+### Passwordless Authentication
+
+**What:** Sign in without a password. Uses something you HAVE (phone, security key) + something you ARE (biometric) or KNOW (PIN). More secure than passwords — nothing to phish.
+
+| Method | How it works |
+|--------|-------------|
+| **FIDO2 Security Key** | Physical USB/NFC key. Tap to authenticate |
+| **Windows Hello for Business** | PIN or biometric tied to device TPM |
+| **Microsoft Authenticator** | Phone notification → approve + biometric |
+
+---
+
+### FIDO2 Security Keys
+
+**What:** Physical hardware keys (YubiKey, Feitian) for passwordless authentication. Plug in USB or tap NFC → no password needed. Phishing-resistant — the key verifies the website's domain.
+
+---
+
+### Windows Hello for Business (WHfB)
+
+**What:** Replace passwords with PIN or biometric (fingerprint, face) tied to the device's TPM chip. The PIN never leaves the device — it's local, not a network credential.
+
+> **FAQ:** *How is a PIN more secure than a password?* The PIN is tied to ONE device. Even if stolen, it can't be used from another machine. A password works from anywhere.
+
+---
+
+### Microsoft Authenticator (Passwordless)
+
+**What:** Push notification to your phone. Approve the sign-in + provide biometric. No password typed. Number matching prevents accidental approvals (user must type the number shown on screen).
+
+---
+
+### Continuous Access Evaluation (CAE)
+
+**What:** Real-time token revocation. Normally, access tokens are valid for 1 hour — if you disable an account, the user can still access resources until the token expires. CAE revokes tokens within minutes.
+
+```
+  Without CAE: User disabled → waits up to 1 hour → access revoked
+  With CAE:    User disabled → access revoked in ~2 minutes
+```
+
+---
+
+### Token Lifetime
+
+**What:** How long authentication tokens are valid before requiring re-authentication.
+
+| Token | Default lifetime |
+|-------|-----------------|
+| Access token | 60-90 minutes |
+| Refresh token | 90 days (revoked on password change) |
+| SAML token | 1 hour |
+| ID token | 1 hour |
+
+---
+
+### Verified ID (Entra Verified ID)
+
+**What:** Decentralized identity — issue and verify digital credentials (employment proof, education certificates) using open standards. Users control their own credentials in a digital wallet.
+
+---
+
+# 21 — AD Security, Attacks & Operations
+
+---
+
+### Kerberoasting
+
+**What:** Attack that extracts service account password hashes from Kerberos service tickets. Any domain user can request a TGS for any SPN → crack the hash offline.
+
+```
+  Attack flow:
+  1. Attacker (any domain user) requests TGS for SPN MSSQLSvc/SQL01
+  2. DC returns TGS encrypted with the service account's hash
+  3. Attacker extracts the hash from the ticket
+  4. Attacker cracks the hash offline (hashcat, john)
+  5. Attacker now has the service account password
+```
+
+**Defenses:** Use gMSAs (Group Managed Service Accounts) with 120+ character auto-rotating passwords. Set long complex passwords for legacy service accounts. Monitor for mass TGS requests.
+
+---
+
+### AS-REP Roasting
+
+**What:** Attack targeting accounts with "Do not require Kerberos pre-authentication" enabled. Attacker requests AS-REP for the account → gets an encrypted blob → cracks offline.
+
+**Defense:** Ensure ALL accounts have Kerberos pre-authentication ENABLED (it's on by default — someone disabled it).
+
+---
+
+### Golden Ticket
+
+**What:** A forged TGT created using the KRBTGT account's password hash. Grants UNRESTRICTED access to EVERYTHING in the domain. Valid for 10 years by default. The ultimate AD compromise.
+
+```
+  How attacker gets KRBTGT hash:
+  1. Compromises a Domain Controller
+  2. Runs DCSync to extract KRBTGT hash
+  
+  Defense:
+  • Reset KRBTGT password TWICE (old hash stays valid for one rotation)
+  • Protect DCs — physical and network isolation
+  • Monitor for anomalous TGT usage
+```
+
+> ⚠️ **Gotcha:** Resetting KRBTGT once leaves the old hash valid (AD keeps N-1 hash). You must reset TWICE with a gap of at least 10 hours.
+
+---
+
+### Silver Ticket
+
+**What:** A forged service ticket for a SPECIFIC service. Uses the service account's hash (not KRBTGT). More targeted than Golden Ticket — access to one service, not the entire domain.
+
+---
+
+### Pass-the-Hash (PtH)
+
+**What:** Attacker steals the NTLM hash from a compromised machine's memory (using Mimikatz) and uses it to authenticate as that user WITHOUT knowing the password.
+
+```
+  Attacker on Workstation-A:
+  1. Extracts NTLM hash of admin from memory (Mimikatz)
+  2. Uses hash to authenticate to Server-B as admin
+  3. No password needed — the hash IS the credential
+```
+
+**Defenses:** Disable NTLM where possible. Use Credential Guard. Don't log into workstations with Domain Admin accounts.
+
+---
+
+### Pass-the-Ticket (PtT)
+
+**What:** Attacker steals Kerberos tickets (TGT or TGS) from memory and injects them into their own session. Similar to PtH but for Kerberos.
+
+---
+
+### DCSync
+
+**What:** Attacker with "Replicating Directory Changes" permission mimics a DC and requests password hashes for ANY account via the replication protocol. Doesn't require access to a DC.
+
+**Defense:** Only Domain Controllers should have replication permissions. Audit these permissions regularly. Alert on non-DC replication requests.
+
+---
+
+### LAPS (Local Administrator Password Solution)
+
+**What:** Automatically manages and rotates the local administrator password on domain-joined machines. Each machine gets a UNIQUE, random password stored in AD (encrypted in Windows LAPS v2).
+
+```
+  Without LAPS:
+  All 500 workstations have the same local admin password "P@ssw0rd!"
+  → Attacker compromises one → has admin on ALL 500
+
+  With LAPS:
+  WS-001: local admin = "j8#kL2@mN!9pQ"
+  WS-002: local admin = "xR5$vB7&cF3nY"
+  Each unique, auto-rotated every 30 days.
+```
+
+---
+
+### gMSA (Group Managed Service Account)
+
+**What:** Service accounts with auto-managed 120-character passwords that rotate every 30 days. No human knows the password. Used for services, scheduled tasks, IIS app pools.
+
+> ⚠️ **Gotcha:** gMSAs require Windows Server 2012+ DCs and the KDS root key. Run `Add-KdsRootKey` before creating gMSAs.
+
+---
+
+### Tiered Administration Model
+
+**What:** Separate admin accounts into tiers to prevent credential theft escalation. Tier 0 credentials NEVER touch Tier 1/2 machines.
+
+```
+  Tier 0: Domain Controllers, Entra Connect, AD DS
+          (highest privilege — most protected)
+  Tier 1: Member servers (SQL, file, app servers)
+  Tier 2: Workstations, end-user devices
+
+  Rules:
+  • Tier 0 admins ONLY log into Tier 0 machines
+  • Tier 1 admins NEVER log into Tier 2 workstations
+  • If attacker compromises Tier 2, they can't reach Tier 0
+```
+
+---
+
+### PAW (Privileged Access Workstation)
+
+**What:** A hardened, dedicated machine used ONLY for administrative tasks. No email, no web browsing, no USB. Physically or logically isolated from regular workstations.
+
+**DevOps example:** Sysadmin uses their regular laptop for email/Teams. For AD admin tasks, they switch to a locked-down PAW that can only reach DCs.
+
+---
+
+### Credential Guard
+
+**What:** Windows security feature that isolates credential hashes in a hardware-backed virtual container. Mimikatz can't extract NTLM hashes or Kerberos tickets from memory.
+
+---
+
+### AD CS (Active Directory Certificate Services)
+
+**What:** On-prem Certificate Authority for issuing certificates (user auth, code signing, TLS). If misconfigured, AD CS templates can be exploited for domain takeover (ESC1-ESC8 attacks).
+
+> ⚠️ **Gotcha:** AD CS misconfigurations are one of the TOP attack vectors in modern AD environments. Audit certificate templates for overly permissive enrollment permissions.
+
+---
+
+### Trusts
+
+**What:** A relationship between two AD domains/forests that allows users in one to access resources in the other. The TRUSTING domain allows access. The TRUSTED domain's users get access.
+
+```
+  Domain A ───trusts──► Domain B
+  
+  Users in Domain B CAN access resources in Domain A
+  Users in Domain A CANNOT access resources in Domain B
+  (unless B also trusts A = two-way trust)
+```
+
+---
+
+### Trust Types
+
+| Type | Direction | Scope |
+|------|----------|-------|
+| **Parent-Child** | Two-way, transitive | Automatic between parent/child domains |
+| **Tree-Root** | Two-way, transitive | Automatic between trees in same forest |
+| **Forest** | One or two-way | Cross-forest. Manual. Non-transitive |
+| **External** | One or two-way | To a single domain in another forest |
+| **Shortcut** | One or two-way | Speeds up auth between distant child domains |
+| **Realm** | One or two-way | To non-Windows Kerberos realm (Linux/MIT) |
+
+---
+
+### SID Filtering
+
+**What:** Security mechanism that removes foreign SIDs from authentication tokens when crossing trust boundaries. Prevents an attacker in Forest B from injecting Domain Admin SID of Forest A into their token.
+
+---
+
+### Selective Authentication
+
+**What:** When creating a forest trust, you can limit WHICH users in the trusted forest can access WHICH resources in the trusting forest. More secure than allowing blanket access.
+
+---
+
+### dcdiag
+
+**What:** THE diagnostic tool for AD health. Tests DNS, replication, FSMO, SYSVOL, connectivity, and more.
+
+```powershell
+# Run all tests
+dcdiag /v
+
+# Common tests
+dcdiag /test:dns          # DNS health
+dcdiag /test:replications # Replication status
+dcdiag /test:sysvolcheck  # SYSVOL/DFS-R health
+dcdiag /test:fsmocheck    # FSMO role holder status
+```
+
+---
+
+### repadmin
+
+**What:** AD replication monitoring and management tool. Check replication status, force sync, view replication partners.
+
+```powershell
+repadmin /replsummary          # Replication health summary
+repadmin /showrepl DC01        # Show replication partners for DC01
+repadmin /syncall /APed        # Force sync all partitions, all DCs
+repadmin /queue DC01           # Check replication queue
+```
+
+---
+
+### ntdsutil
+
+**What:** AD database management tool. Metadata cleanup (remove dead DCs), FSMO role seizure, authoritative restore, AD snapshot management.
+
+```powershell
+# Seize FSMO role (when original holder is permanently offline)
+ntdsutil → roles → connections → connect to server DC02
+→ seize PDC
+
+# Metadata cleanup (remove a decommissioned DC)
+ntdsutil → metadata cleanup → select operation target
+→ remove selected server
+```
+
+---
+
+### AD Hardening Checklist
+
+```
+  ✅ Enable LAPS for local admin passwords
+  ✅ Use gMSAs for service accounts
+  ✅ Implement tiered administration (Tier 0/1/2)
+  ✅ Disable NTLM where possible, enforce NTLMv2 minimum
+  ✅ Enable Credential Guard on all admin machines
+  ✅ Protect Domain Controllers (dedicated, no other workloads)
+  ✅ Reset KRBTGT password twice per year
+  ✅ Audit AD CS templates for misconfigurations
+  ✅ Enable AD Recycle Bin
+  ✅ Monitor for Kerberoasting (mass TGS requests)
+  ✅ Use PAWs for privileged administration
+  ✅ Enable SID Filtering on all trusts
+  ✅ Run dcdiag and repadmin regularly
+  ✅ Backup AD DS (System State) daily
+```
+
+---
+
+> **🎉 Glossary Complete! 21/21 batches. ~4,850+ lines. 500+ terms covered.**
+
