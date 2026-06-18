@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azure Networking — Professional Presentation</title>
+  <meta name="description" content="Concise professional presentation covering Azure Networking: VNets, NSGs, Load Balancers, DNS, VPN, ExpressRoute, Private Link and more.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="progress-bar"></div>
+
+  <div class="presentation">
+
+    <!-- SLIDE 1: Title -->
+    <div class="slide title-slide active">
+      <div class="badge">☁️ Cloud Engineering</div>
+      <h1>Azure Networking</h1>
+      <p class="subtitle">Core Services, Architecture Patterns & Security</p>
+      <p class="meta">Use Arrow Keys or Buttons to Navigate &bull; Interactive Presentation</p>
+    </div>
+
+    <!-- SLIDE 2: Agenda -->
+    <div class="slide">
+      <div class="section-num">Overview</div>
+      <h2>What We'll <span class="hl">Cover</span></h2>
+      <ul class="bullets">
+        <li><strong>1. Virtual Networks (VNet)</strong> — Foundation of Azure networking</li>
+        <li><strong>2. Subnets & NSGs</strong> — Segmentation and traffic filtering</li>
+        <li><strong>3. Load Balancing</strong> — L4 Load Balancer, L7 App Gateway, Front Door</li>
+        <li><strong>4. DNS & Traffic Manager</strong> — Name resolution and global routing</li>
+        <li><strong>5. Hybrid Connectivity</strong> — VPN Gateway & ExpressRoute</li>
+        <li><strong>6. Security Services</strong> — Firewall, Bastion, Private Link, DDoS</li>
+        <li><strong>7. Architecture Patterns</strong> — Hub-Spoke, Zero Trust, Multi-Region</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 3: VNet -->
+    <div class="slide">
+      <div class="section-num">Section 01</div>
+      <h2>Virtual Network <span class="hl">(VNet)</span></h2>
+      <div class="cards cards-2">
+        <div class="card">
+          <div class="icon">🌐</div>
+          <h4>What Is a VNet?</h4>
+          <p>An isolated, private network in Azure. All Azure resources (VMs, databases, apps) live inside a VNet. It's your own address space in the cloud — like a private datacenter network.</p>
+          <div class="tags">
+            <span class="tag">CIDR: 10.0.0.0/16</span>
+            <span class="tag purple">Region-scoped</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon">⚡</div>
+          <h4>Key Properties</h4>
+          <ul>
+            <li>Address space defined via CIDR (e.g. 10.0.0.0/16)</li>
+            <li>Scoped to a single Azure region</li>
+            <li>Segmented into subnets</li>
+            <li>Free — no cost for VNet itself</li>
+            <li>Cross-VNet via Peering or VPN</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Subnets & NSGs -->
+    <div class="slide">
+      <div class="section-num">Section 02</div>
+      <h2>Subnets & <span class="hl">NSGs</span></h2>
+      <div class="two-col">
+        <div class="col">
+          <h3>Subnets</h3>
+          <div class="card">
+            <p>Subdivisions of a VNet's address space. Each subnet gets a CIDR range and can host specific resources.</p>
+            <ul style="margin-top:12px">
+              <li>Azure reserves 5 IPs per subnet</li>
+              <li>Resources in same VNet communicate freely</li>
+              <li>Dedicated subnets: GatewaySubnet, AzureFirewallSubnet, AzureBastionSubnet</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col">
+          <h3>Network Security Groups</h3>
+          <div class="card">
+            <p>Stateful firewall rules attached to subnets or NICs. Filter traffic by source, destination, port, and protocol.</p>
+            <ul style="margin-top:12px">
+              <li>Priority: 100–4096 (lower = first)</li>
+              <li>Default: allow VNet ↔ VNet, deny inbound internet</li>
+              <li>Attach to subnet (all resources) or NIC (single resource)</li>
+            </ul>
+            <div class="tags" style="margin-top:12px">
+              <span class="tag">Inbound Rules</span>
+              <span class="tag purple">Outbound Rules</span>
+              <span class="tag cyan">Stateful</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: NSG Rule Example -->
+    <div class="slide">
+      <div class="section-num">Section 02 — Continued</div>
+      <h2>NSG <span class="hl">Rule Evaluation</span></h2>
+      <div class="diagram-box">
+ Inbound Traffic Arrives
+        │
+        ▼
+ ┌─────────────────────────────┐
+ │  Subnet NSG (if attached)   │
+ │  Evaluate rules by priority │
+ │  100: Allow SSH from VNet   │ ← lowest number = first checked
+ │  200: Allow HTTP from Any   │
+ │  300: Deny  ALL  from Any   │
+ │  65000: Allow VNet inbound  │ ← default rules
+ │  65500: Deny All inbound    │
+ └────────────┬────────────────┘
+              │ If ALLOWED ↓
+ ┌────────────▼────────────────┐
+ │  NIC NSG (if attached)      │
+ │  Same priority evaluation   │
+ └────────────┬────────────────┘
+              │ If ALLOWED ↓
+         Traffic reaches VM</div>
+    </div>
+
+    <!-- SLIDE 6: Load Balancing Overview -->
+    <div class="slide">
+      <div class="section-num">Section 03</div>
+      <h2>Load Balancing <span class="hl">Services</span></h2>
+      <div class="cards cards-3">
+        <div class="card">
+          <div class="icon">⚖️</div>
+          <h4>Azure Load Balancer</h4>
+          <p><strong>Layer 4</strong> (TCP/UDP). Distributes traffic to VMs within a region. Ultra-fast, millions of flows/sec.</p>
+          <div class="tags">
+            <span class="tag">L4</span>
+            <span class="tag purple">Regional</span>
+            <span class="tag cyan">Public / Internal</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon">🛡️</div>
+          <h4>Application Gateway</h4>
+          <p><strong>Layer 7</strong> (HTTP/S). URL-based routing, SSL offload, WAF, cookie affinity. Regional web app LB.</p>
+          <div class="tags">
+            <span class="tag">L7</span>
+            <span class="tag purple">WAF</span>
+            <span class="tag cyan">SSL Termination</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon">🌍</div>
+          <h4>Azure Front Door</h4>
+          <p><strong>Global L7</strong>. CDN + LB + WAF at Microsoft's edge. Accelerates global apps with anycast.</p>
+          <div class="tags">
+            <span class="tag">Global</span>
+            <span class="tag purple">CDN</span>
+            <span class="tag cyan">Anycast</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Load Balancing Decision -->
+    <div class="slide">
+      <div class="section-num">Section 03 — Decision Guide</div>
+      <h2>Which <span class="hl">Load Balancer?</span></h2>
+      <table class="styled-table">
+        <thead>
+          <tr><th>Feature</th><th>Load Balancer</th><th>App Gateway</th><th>Front Door</th><th>Traffic Manager</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>OSI Layer</strong></td><td>L4 (TCP/UDP)</td><td>L7 (HTTP/S)</td><td>L7 (HTTP/S)</td><td>DNS-based</td></tr>
+          <tr><td><strong>Scope</strong></td><td>Regional</td><td>Regional</td><td>Global</td><td>Global</td></tr>
+          <tr><td><strong>WAF</strong></td><td>✗</td><td>✓</td><td>✓</td><td>✗</td></tr>
+          <tr><td><strong>SSL Offload</strong></td><td>✗</td><td>✓</td><td>✓</td><td>✗</td></tr>
+          <tr><td><strong>URL Routing</strong></td><td>✗</td><td>✓</td><td>✓</td><td>✗</td></tr>
+          <tr><td><strong>Use Case</strong></td><td>VM fleet, non-HTTP</td><td>Web apps in region</td><td>Global web apps</td><td>DNS failover</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SLIDE 8: VNet Peering -->
+    <div class="slide">
+      <div class="section-num">Section 04</div>
+      <h2>VNet <span class="hl">Peering</span></h2>
+      <div class="two-col">
+        <div class="col">
+          <div class="card">
+            <div class="icon">🔗</div>
+            <h4>What Is It?</h4>
+            <p>Connects two VNets so resources communicate over Microsoft's backbone — private, low-latency, high-bandwidth. No gateway needed.</p>
+            <ul style="margin-top:12px">
+              <li><strong>Regional</strong> — same region, free traffic</li>
+              <li><strong>Global</strong> — cross-region, egress charges</li>
+              <li>Non-transitive (A↔B, B↔C ≠ A↔C)</li>
+              <li>No overlapping CIDR allowed</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col">
+          <div class="diagram-box" style="font-size:0.78rem">
+ ┌──────────────┐       ┌──────────────┐
+ │ VNet-Hub     │       │ VNet-Spoke1  │
+ │ 10.0.0.0/16  │◄─────►│ 10.1.0.0/16  │
+ │              │Peering│              │
+ │ Firewall     │       │ Web App VMs  │
+ │ VPN Gateway  │       │              │
+ └──────┬───────┘       └──────────────┘
+        │ Peering
+ ┌──────▼───────┐
+ │ VNet-Spoke2  │
+ │ 10.2.0.0/16  │
+ │ Database VMs │
+ └──────────────┘</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: DNS -->
+    <div class="slide">
+      <div class="section-num">Section 05</div>
+      <h2>Azure <span class="hl">DNS</span></h2>
+      <div class="cards cards-2">
+        <div class="card">
+          <div class="icon">📛</div>
+          <h4>Public DNS Zones</h4>
+          <p>Host your domain's DNS records (A, CNAME, MX, TXT) on Azure's global nameserver network. 100% SLA with anycast.</p>
+          <ul style="margin-top:10px">
+            <li>Supports alias records for Azure resources</li>
+            <li>Integrates with Traffic Manager</li>
+            <li>RBAC on DNS management</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="icon">🔒</div>
+          <h4>Private DNS Zones</h4>
+          <p>Name resolution inside VNets — no custom DNS server needed. Auto-registers VM hostnames.</p>
+          <ul style="margin-top:10px">
+            <li>Link to one or more VNets</li>
+            <li>Auto-registration of VM names</li>
+            <li>Critical for Private Endpoints (e.g. privatelink.database.windows.net)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: Hybrid - VPN -->
+    <div class="slide">
+      <div class="section-num">Section 06</div>
+      <h2>Hybrid: <span class="hl">VPN Gateway</span></h2>
+      <div class="two-col">
+        <div class="col">
+          <div class="card">
+            <h4>Site-to-Site VPN</h4>
+            <p>Encrypted IPsec tunnel between on-premises and Azure VNet over public internet.</p>
+            <ul style="margin-top:10px">
+              <li>Up to 10 Gbps (VpnGw5)</li>
+              <li>Requires GatewaySubnet (/27 minimum)</li>
+              <li>Active-Active for HA</li>
+            </ul>
+          </div>
+          <div class="card" style="margin-top:16px">
+            <h4>Point-to-Site VPN</h4>
+            <p>Individual client → Azure VNet connection. For remote developers/admins.</p>
+            <div class="tags"><span class="tag">OpenVPN</span><span class="tag purple">IKEv2</span><span class="tag cyan">SSTP</span></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="diagram-box" style="font-size:0.78rem">
+ On-Premises DC             Azure
+ ┌──────────────┐   IPsec   ┌──────────────┐
+ │ Router/FW    │◄─────────►│ VPN Gateway  │
+ │ 192.168.0/24 │  Tunnel   │ GatewaySubnet│
+ └──────────────┘   over    └──────┬───────┘
+                  Internet         │
+                            ┌──────▼───────┐
+                            │ VNet         │
+                            │ 10.0.0.0/16  │
+                            │  ├─ Web VMs  │
+                            │  └─ DB VMs   │
+                            └──────────────┘</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: ExpressRoute -->
+    <div class="slide">
+      <div class="section-num">Section 06 — Continued</div>
+      <h2>Azure <span class="hl">ExpressRoute</span></h2>
+      <div class="cards cards-2">
+        <div class="card">
+          <div class="icon">⚡</div>
+          <h4>Private Dedicated Connection</h4>
+          <p>A private fiber link from your datacenter to Azure — <strong>does NOT traverse the public internet</strong>. Lower latency, higher throughput, more reliable than VPN.</p>
+          <ul style="margin-top:10px">
+            <li>Speeds: 50 Mbps – 100 Gbps</li>
+            <li>Uses BGP for dynamic routing</li>
+            <li>99.95% SLA (99.99% with redundant circuits)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="icon">🆚</div>
+          <h4>ExpressRoute vs VPN</h4>
+          <table class="styled-table" style="font-size:0.82rem; margin-top:8px">
+            <tr><th></th><th>VPN</th><th>ExpressRoute</th></tr>
+            <tr><td>Path</td><td>Public Internet</td><td>Private fiber</td></tr>
+            <tr><td>Speed</td><td>≤10 Gbps</td><td>≤100 Gbps</td></tr>
+            <tr><td>Latency</td><td>Variable</td><td>Predictable</td></tr>
+            <tr><td>Cost</td><td>$$$</td><td>$$$$</td></tr>
+            <tr><td>Setup</td><td>Hours</td><td>Weeks</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: Security Services -->
+    <div class="slide">
+      <div class="section-num">Section 07</div>
+      <h2>Network <span class="hl">Security</span></h2>
+      <div class="cards cards-4">
+        <div class="card">
+          <div class="icon">🔥</div>
+          <h4>Azure Firewall</h4>
+          <p>Managed L3-L7 firewall. FQDN filtering, threat intelligence, centralized logging. Deploy in hub VNet.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🏰</div>
+          <h4>Azure Bastion</h4>
+          <p>Managed jump host. RDP/SSH to VMs via browser — no public IPs needed on VMs. Zero-attack-surface access.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🔐</div>
+          <h4>Private Link / Endpoints</h4>
+          <p>Access Azure PaaS (SQL, Storage, Key Vault) via private IP inside your VNet. Traffic stays on Microsoft backbone.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🛡️</div>
+          <h4>DDoS Protection</h4>
+          <p>Always-on traffic monitoring. Basic (free, auto-enabled) or Standard (adaptive tuning, cost protection, SLA).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 13: Private Endpoint Deep Dive -->
+    <div class="slide">
+      <div class="section-num">Section 07 — Deep Dive</div>
+      <h2>Private <span class="hl">Endpoints</span></h2>
+      <div class="diagram-box">
+ WITHOUT Private Endpoint:
+ ┌──────────┐      Public Internet       ┌──────────────────┐
+ │  VM      │ ──────────────────────────► │ SQL Database     │
+ │ 10.0.1.5 │  sql.database.windows.net   │ (public IP)      │
+ └──────────┘                             └──────────────────┘
+
+ WITH Private Endpoint:
+ ┌──────────────────────────────────────────────────────┐
+ │  VNet (10.0.0.0/16)                                  │
+ │                                                      │
+ │  ┌──────────┐         ┌──────────────────┐          │
+ │  │  VM      │────────►│ Private Endpoint │──► SQL DB │
+ │  │ 10.0.1.5 │ Private │ 10.0.2.4         │   (no    │
+ │  └──────────┘   IP    └──────────────────┘   public) │
+ │                                                      │
+ │  Traffic NEVER leaves Microsoft network              │
+ └──────────────────────────────────────────────────────┘</div>
+    </div>
+
+    <!-- SLIDE 14: Service Endpoints vs Private Endpoints -->
+    <div class="slide">
+      <div class="section-num">Section 07 — Comparison</div>
+      <h2>Service Endpoints <span class="hl">vs Private Endpoints</span></h2>
+      <table class="styled-table">
+        <thead>
+          <tr><th>Feature</th><th>Service Endpoint</th><th>Private Endpoint</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>How it works</strong></td><td>Optimized route to PaaS over backbone</td><td>Private IP (NIC) in your VNet for PaaS</td></tr>
+          <tr><td><strong>PaaS public IP</strong></td><td>Still exists (just restricted)</td><td>Can disable completely</td></tr>
+          <tr><td><strong>On-prem access</strong></td><td>✗ VNet traffic only</td><td>✓ Via VPN/ExpressRoute</td></tr>
+          <tr><td><strong>DNS required</strong></td><td>No change</td><td>Yes — Private DNS Zone</td></tr>
+          <tr><td><strong>Cost</strong></td><td>Free</td><td>~$7.30/mo + data processing</td></tr>
+          <tr><td><strong>Recommendation</strong></td><td>Quick wins, dev/test</td><td>Production — full isolation</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SLIDE 15: NAT Gateway & Network Watcher -->
+    <div class="slide">
+      <div class="section-num">Section 08</div>
+      <h2>NAT Gateway & <span class="hl">Network Watcher</span></h2>
+      <div class="cards cards-2">
+        <div class="card">
+          <div class="icon">🔄</div>
+          <h4>NAT Gateway</h4>
+          <p>Provides outbound internet connectivity for VMs in private subnets using a static public IP. Fully managed SNAT.</p>
+          <ul style="margin-top:10px">
+            <li>Up to 16 public IPs (64K SNAT ports each)</li>
+            <li>Eliminates SNAT exhaustion</li>
+            <li>Attach to subnet — all VMs auto-use it</li>
+            <li>Outbound only — no inbound initiation</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="icon">🔍</div>
+          <h4>Network Watcher</h4>
+          <p>Diagnostic and monitoring toolkit for Azure networks.</p>
+          <ul style="margin-top:10px">
+            <li><strong>IP Flow Verify</strong> — is traffic allowed?</li>
+            <li><strong>Next Hop</strong> — where does packet go?</li>
+            <li><strong>NSG Flow Logs</strong> — who's talking to whom</li>
+            <li><strong>Connection Troubleshoot</strong> — end-to-end test</li>
+            <li><strong>Packet Capture</strong> — capture on VM NIC</li>
+            <li><strong>Topology</strong> — visual network map</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 16: Hub-Spoke Architecture -->
+    <div class="slide">
+      <div class="section-num">Section 09</div>
+      <h2>Hub-Spoke <span class="hl">Architecture</span></h2>
+      <div class="diagram-box">
+                          Internet / On-Premises
+                                │
+                    ┌───────────▼───────────┐
+                    │   HUB VNet (10.0/16)  │
+                    │                       │
+                    │  ┌─────────────────┐  │
+                    │  │ Azure Firewall  │  │  ← Centralized security
+                    │  │ VPN Gateway     │  │  ← Hybrid connectivity
+                    │  │ Bastion Host    │  │  ← Secure admin access
+                    │  └─────────────────┘  │
+                    └──┬─────────┬──────┬───┘
+           Peering     │         │      │     Peering
+          ┌────────────┘         │      └────────────┐
+          ▼                      ▼                   ▼
+ ┌────────────────┐  ┌────────────────┐  ┌────────────────┐
+ │ Spoke 1 (Prod) │  │ Spoke 2 (Dev)  │  │ Spoke 3 (DMZ)  │
+ │ 10.1.0.0/16    │  │ 10.2.0.0/16   │  │ 10.3.0.0/16    │
+ │ Web + API VMs  │  │ Test VMs       │  │ Public-facing   │
+ └────────────────┘  └────────────────┘  └────────────────┘
+
+ ✓ All traffic flows through Hub firewall for inspection
+ ✓ Spokes isolated from each other by default
+ ✓ Shared services (DNS, AD, monitoring) in Hub</div>
+    </div>
+
+    <!-- SLIDE 17: Zero Trust Network -->
+    <div class="slide">
+      <div class="section-num">Section 09 — Security Pattern</div>
+      <h2>Zero Trust <span class="hl">Network Model</span></h2>
+      <div class="cards cards-3">
+        <div class="card">
+          <div class="icon">🔒</div>
+          <h4>Verify Explicitly</h4>
+          <ul>
+            <li>Managed Identity for all services</li>
+            <li>Conditional Access policies</li>
+            <li>MFA for all admin access</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="icon">🎯</div>
+          <h4>Least Privilege</h4>
+          <ul>
+            <li>NSGs: deny-all default, allow specific</li>
+            <li>Private Endpoints for all PaaS</li>
+            <li>No public IPs on VMs</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="icon">💥</div>
+          <h4>Assume Breach</h4>
+          <ul>
+            <li>Micro-segmentation with NSGs</li>
+            <li>Azure Firewall for east-west traffic</li>
+            <li>NSG flow logs + Microsoft Sentinel</li>
+          </ul>
+        </div>
+      </div>
+      <div style="margin-top:24px">
+        <div class="flow">
+          <div class="flow-item">User + Device</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-item">Identity (Entra ID)</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-item">Conditional Access</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-item">Bastion / P2S VPN</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-item">NSG + Firewall</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-item">Resource</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 18: Key Takeaways -->
+    <div class="slide">
+      <div class="section-num">Summary</div>
+      <h2>Key <span class="hl">Takeaways</span></h2>
+      <ul class="bullets">
+        <li><strong>VNet is your foundation</strong> — design address spaces and subnets before deploying anything</li>
+        <li><strong>NSGs are your first line of defense</strong> — apply at subnet level with deny-all baseline</li>
+        <li><strong>Use Private Endpoints for PaaS</strong> — eliminate public exposure for SQL, Storage, Key Vault</li>
+        <li><strong>Pick the right LB</strong> — L4 for VMs, App Gateway for web, Front Door for global</li>
+        <li><strong>Hub-Spoke for enterprise</strong> — centralize firewall, gateway, monitoring in the hub</li>
+        <li><strong>ExpressRoute for mission-critical</strong> — VPN for dev/test, ExpressRoute for production hybrid</li>
+        <li><strong>Network Watcher is your debugger</strong> — use IP Flow Verify and Connection Troubleshoot first</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 19: Thank You -->
+    <div class="slide title-slide">
+      <div class="badge">✅ Complete</div>
+      <h1>Thank You</h1>
+      <p class="subtitle">Azure Networking — Core Services, Architecture & Security</p>
+      <p class="meta">Questions? Let's discuss.</p>
+    </div>
+
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav">
+    <button id="prev" aria-label="Previous slide">←</button>
+    <span class="slide-counter">1 / 19</span>
+    <button id="next" aria-label="Next slide">→</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
