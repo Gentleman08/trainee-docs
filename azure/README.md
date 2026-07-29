@@ -21,6 +21,7 @@
 | Document | Description |
 |----------|-------------|
 | [Azure for DevOps Handbook](azure_handbook.md) | Complete Azure guide: compute, networking, storage, AKS, DevOps pipelines, IaC, security, HA/DR, and production Q&A |
+| [AZ-104 Exam Handbook](az104_exam_handbook.md) | 100 exam-style Q&A with explanations — all 5 domains: Identity & Governance, Storage, Compute, Networking, Monitoring |
 
 ---
 
