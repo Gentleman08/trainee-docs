@@ -9,6 +9,7 @@
 
 | Category | Description |
 |----------|-------------|
+| [⚡ Quick Reference](quick-reference/) | DNS, Azure RBAC, KT checklist, Project best practices — concise notes for real situations |
 | [🪟 Windows](windows/) | Windows Server, Active Directory, GPO, DNS, DHCP, PowerShell |
 | [🐧 Linux](linux/) | _Coming soon_ — Fundamentals, shell scripting, systemd, networking |
 | [🌐 Servers](servers/) | Nginx, Apache, IIS — reverse proxy, SSL, static hosting, production Q&A |
