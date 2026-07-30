@@ -28,6 +28,7 @@
 |------------|----------|
 | [Windows Server 2022](windows/windows_server_2022_cheatsheet.md) | Windows |
 | [Linux Admin Handbook](linux/linux_admin_handbook.md) | Linux |
+| [Linux CLI Power Tools Handbook](linux/cli_power_tools_handbook.md) | Linux |
 | [Nginx](servers/nginx.md) | Servers |
 | [Apache HTTP Server](servers/apache.md) | Servers |
 | [IIS (Internet Information Services)](servers/iis.md) | Servers |
@@ -38,6 +39,8 @@
 | [Scripting for DevOps Handbook](scripting/scripting_handbook.md) | Scripting |
 | [Kubernetes Handbook](kubernetes/kubernetes_handbook.md) | Kubernetes |
 | [DevOps on Azure Handbook](azure/azure_handbook.md) | Azure |
+| [AZ-104 Exam Handbook](azure/az104_exam_handbook.md) | Azure |
+| [AZ-305 Exam Handbook](azure/az305_exam_handbook.md) | Azure |
 
 ---
 
