@@ -3,6 +3,7 @@
 > Comprehensive Git guide covering internals, branching, workflows, disaster recovery, security, and production-grade DevOps practices.
 
 - [📘 Git Handbook — Comprehensive DevOps/Cloud Guide](git_handbook.md)
+- [🎭 Git Scenarios — Command Reference by Situation](git_scenarios.md)
 
 ---
 

@@ -11,7 +11,7 @@
 |----------|-------------|
 | [⚡ Quick Reference](quick-reference/) | DNS, Azure RBAC, KT checklist, Project best practices — concise notes for real situations |
 | [🪟 Windows](windows/) | Windows Server, Active Directory, GPO, DNS, DHCP, PowerShell |
-| [🐧 Linux](linux/) | _Coming soon_ — Fundamentals, shell scripting, systemd, networking |
+| [🐧 Linux](linux/) | Linux administration, shell scripting, CLI power tools (grep, awk, sed, curl, wget, journalctl) |
 | [🌐 Servers](servers/) | Nginx, Apache, IIS — reverse proxy, SSL, static hosting, production Q&A |
 | [🌐 Networking](networking/) | OSI/TCP-IP, subnetting, DNS, HTTP/TLS, firewalls, load balancers, VPNs, container networking |
 | [☁️ Cloud](cloud/) | Data centers, virtualization, AWS/Azure/GCP, IaC, serverless, containers, DR, FinOps |
@@ -19,6 +19,7 @@
 | [📜 Scripting](scripting/) | Bash & Python scripting for DevOps — automation, CI/CD, K8s, monitoring |
 | [☸️ Kubernetes](kubernetes/) | K8s architecture, workloads, networking, Helm, security, production patterns |
 | [☁️ Azure](azure/) | Azure DevOps, AKS, Pipelines, IaC (Bicep/Terraform), monitoring, security, migration |
+| [🔀 Git](git/) | Git internals, branching, workflows, disaster recovery, scenario-based command reference |
 
 ---
 
@@ -41,6 +42,8 @@
 | [DevOps on Azure Handbook](azure/azure_handbook.md) | Azure |
 | [AZ-104 Exam Handbook](azure/az104_exam_handbook.md) | Azure |
 | [AZ-305 Exam Handbook](azure/az305_exam_handbook.md) | Azure |
+| [Git Handbook](git/git_handbook.md) | Git |
+| [Git Scenarios — Command Reference](git/git_scenarios.md) | Git |
 
 ---
 
@@ -95,7 +98,17 @@
 ├── azure/
 │   ├── README.md          ← Azure category index
 │   ├── azure_handbook.md  ← DevOps on Azure guide
+│   ├── az104_exam_handbook.md  ← AZ-104 exam Q&A
+│   ├── az305_exam_handbook.md  ← AZ-305 exam Q&A
 │   └── azure_batch_state.md  ← Batch review tracker
+├── linux/
+│   ├── README.md              ← Linux category index
+│   ├── linux_admin_handbook.md  ← Comprehensive Linux admin guide
+│   └── cli_power_tools_handbook.md  ← grep, awk, sed, curl, wget, journalctl
+├── git/
+│   ├── README.md          ← Git category index
+│   ├── git_handbook.md    ← Comprehensive Git internals & workflows
+│   └── git_scenarios.md   ← Scenario-based command reference
 ```
 
 ---
