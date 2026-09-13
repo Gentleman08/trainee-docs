@@ -42,6 +42,7 @@
 | [DevOps on Azure Handbook](azure/azure_handbook.md) | Azure |
 | [AZ-104 Exam Handbook](azure/az104_exam_handbook.md) | Azure |
 | [AZ-305 Exam Handbook](azure/az305_exam_handbook.md) | Azure |
+| [SC-300 Cheatsheet](azure/sc300_cheatsheet.md) | Azure |
 | [Git Handbook](git/git_handbook.md) | Git |
 | [Git Scenarios — Command Reference](git/git_scenarios.md) | Git |
 

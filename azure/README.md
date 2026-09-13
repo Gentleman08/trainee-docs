@@ -23,6 +23,7 @@
 | [Azure for DevOps Handbook](azure_handbook.md) | Complete Azure guide: compute, networking, storage, AKS, DevOps pipelines, IaC, security, HA/DR, and production Q&A |
 | [AZ-104 Exam Handbook](az104_exam_handbook.md) | 100 exam-style Q&A with explanations — all 5 domains: Identity & Governance, Storage, Compute, Networking, Monitoring |
 | [AZ-305 Exam Handbook](az305_exam_handbook.md) | 85 architect-level Q&A with explanations — all 4 design domains: Identity/Governance/Monitoring, Storage, Business Continuity, Infrastructure |
+| [SC-300 Cheatsheet](sc300_cheatsheet.md) | Beginner-friendly one-liner definitions for all SC-300 Identity & Access Administrator terms — MFA, PIM, CA, Identity Protection, Entitlement Management, B2B/B2C and more |
 
 ---
 
