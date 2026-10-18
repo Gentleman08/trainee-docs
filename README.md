@@ -11,7 +11,7 @@
 - [🚀 Start Here](#-start-here)
 - [🧭 Learning Path](#-learning-path)
 - [📂 Browse by Domain](#-browse-by-domain)
-  - [1. Foundations](#1-foundations) · [2. Cloud & Azure](#2-cloud--azure) · [3. Containers & Kubernetes](#3-containers--kubernetes) · [4. CI/CD & Automation](#4-cicd--automation)
+  - [1. Foundations](#1-foundations) · [2. Cloud, AWS & Azure](#2-cloud-aws--azure) · [3. Containers & Kubernetes](#3-containers--kubernetes) · [4. CI/CD & Automation](#4-cicd--automation)
   - [5. Security](#5-security) · [6. AI & Development](#6-ai--development) · [7. Reference & Glossaries](#7-reference--glossaries) · [8. Practice & Interview Prep](#8-practice--interview-prep)
 - [📄 All Documents](#-all-documents)
 - [🧱 Repo Structure](#-repo-structure)
@@ -46,7 +46,7 @@ A suggested order for a DevOps/Cloud trainee. Each step: **read the handbook →
 | 6 | Windows Server | [Windows Server 2022](windows/windows_server_2022_cheatsheet.md) | [Windows Server tasks](tasks/windows_server/level_1.md) · [IIS lab](labs/iis_practice_lab.md) |
 | 7 | Scripting | [Scripting Handbook](scripting/scripting_handbook.md) | Automate tasks from earlier stages |
 | 8 | Cloud concepts | [Cloud Handbook](cloud/cloud_handbook.md), [Intermediate Terms](devops-glossary/intermediate-terms.md) | [Cloud tasks](tasks/README.md) · [Cloud lab](labs/cloud_practice_lab.md) |
-| 9 | Azure | [Azure Handbook](azure/azure_handbook.md), [Azure Services](azure-services/README.md) | [Azure Labs 1–6](azure%20labs/README.md) |
+| 9 | Azure and/or AWS | [Azure Handbook](azure/azure_handbook.md), [Azure Services](azure-services/README.md) · [AWS Terms](aws/01-aws-terms.md), [AWS Services](aws/02-aws-services.md) | [Azure Labs 1–6](azure%20labs/README.md) · [AWS Scenarios](aws/03-aws-scenarios.md) |
 | 10 | Containers | [VM vs Containers & Docker](docker/devops_vm_containers_docker.md), [Dockerfile Handbook](docker/dockerfile_handbook/README.md) | Containerise a sample app |
 | 11 | Kubernetes | [Kubernetes Handbook](kubernetes/kubernetes_handbook.md) | [Azure Labs batch 3 (AKS)](azure%20labs/batch-3-containers-databases-and-messaging.md) |
 | 12 | CI/CD & IaC | [CI/CD Pipeline Scenarios](cicd-pipelines/README.md), [Azure DevOps Guide](azure-devops/index.md), [Terraform Architecture](terraform-arch/README.md) | [Azure Labs batch 4](azure%20labs/batch-4-serverless-cicd-and-iac.md) |
@@ -68,11 +68,12 @@ A suggested order for a DevOps/Cloud trainee. Each step: **read the handbook →
 | [📜 Scripting](scripting/README.md) | Bash & Python for DevOps: automation, CI/CD, Kubernetes, monitoring |
 | [🌐 Servers](servers/README.md) | Nginx, Apache, IIS: reverse proxy, SSL, hosting, production Q&A |
 
-### 2. Cloud & Azure
+### 2. Cloud, AWS & Azure
 
 | Folder | What's inside |
 |--------|---------------|
 | [☁️ Cloud](cloud/README.md) | Data centres, virtualisation, IaaS/PaaS/SaaS, AWS/Azure/GCP, HA/DR, FinOps |
+| [🟧 AWS](aws/README.md) | ~170 AWS terms, ~170 services with when to use each, 20 scenario architectures, decision guides, Azure ↔ AWS mapping, AWS CLI command reference |
 | [☁️ Azure](azure/README.md) | DevOps-on-Azure handbook, AZ-104 & AZ-305 exam Q&A, SC-300 cheatsheet, networking presentation |
 | [🧰 Azure Services](azure-services/README.md) | Service-by-service reference handbook + configuration deep dives |
 | [📖 Azure Glossary](azure-glossary/README.md) | 500+ Azure & Active Directory terms |
@@ -153,6 +154,7 @@ A suggested order for a DevOps/Cloud trainee. Each step: **read the handbook →
 | [Scripting for DevOps Handbook](scripting/scripting_handbook.md) | Scripting |
 | [Nginx](servers/nginx.md) · [Apache](servers/apache.md) · [IIS](servers/iis.md) | Servers |
 | [Data Centers & Cloud Computing Handbook](cloud/cloud_handbook.md) | Cloud |
+| [AWS Terms](aws/01-aws-terms.md) · [AWS Services](aws/02-aws-services.md) · [AWS Scenarios & Decision Guides](aws/03-aws-scenarios.md) · [AWS CLI Commands](aws/04-aws-cli-commands.md) | AWS |
 | [DevOps on Azure Handbook](azure/azure_handbook.md) | Azure |
 | [AZ-104 Exam Handbook](azure/az104_exam_handbook.md) · [AZ-305 Exam Handbook](azure/az305_exam_handbook.md) · [SC-300 Cheatsheet](azure/sc300_cheatsheet.md) | Azure |
 | [Azure Services Handbook](azure-services/azure_services_handbook.md) · [Azure Deep Dive Notes](azure-services/azure_deepdive_notes.md) | Azure Services |
@@ -201,8 +203,9 @@ trainee-docs/
 ├── scripting/                   ← Bash & Python for DevOps
 ├── servers/                     ← Nginx, Apache, IIS
 │
-├── ── Cloud & Azure ────────────────────────────────────────────
+├── ── Cloud, AWS & Azure ───────────────────────────────────────────
 ├── cloud/                       ← Data centres & cloud computing
+├── aws/                         ← AWS terms, services, scenarios, decision guides & CLI commands
 ├── azure/                       ← Azure handbook, AZ-104/305, SC-300, presentation/
 ├── azure-services/              ← Service reference + deep dives
 ├── azure-glossary/              ← 500+ Azure/AD terms
