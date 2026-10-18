@@ -29,7 +29,7 @@
 17. [Monitoring & Observability](#17-monitoring--observability)
 18. [Kubernetes Security Hardening](#18-kubernetes-security-hardening)
 19. [Multi-Cluster, Federation & GitOps](#19-multi-cluster-federation--gitops)
-20. [Production Gotchas & Scenario-Based FAQ](#20-production-gotchas--scenario-based-faq)
+20. [Production Gotchas & Scenario-Based FAQ](#20-production-scenario-based-faq)
 
 ---
 

@@ -18,7 +18,7 @@
 8. [Azure DevOps — Pipeline Permissions](#8-azure-devops--pipeline-permissions)
 9. [Identity Types](#9-identity-types)
 10. [Least Privilege Decision Guide](#10-least-privilege-decision-guide)
-11. [DevOps Gotchas ⚠️](#11-devops-gotchas)
+11. [DevOps Gotchas ⚠️](#11-devops-gotchas-)
 
 ---
 

@@ -20,7 +20,7 @@
 10. [Cost Management](#10-cost-management)
 11. [Security from Day 1](#11-security-from-day-1)
 12. [Service Connections — Use OIDC, Not Secrets](#12-service-connections--use-oidc-not-secrets)
-13. [DevOps Gotchas ⚠️](#13-devops-gotchas)
+13. [DevOps Gotchas ⚠️](#13-devops-gotchas-)
 
 ---
 

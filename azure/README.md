@@ -24,6 +24,20 @@
 | [AZ-104 Exam Handbook](az104_exam_handbook.md) | 100 exam-style Q&A with explanations — all 5 domains: Identity & Governance, Storage, Compute, Networking, Monitoring |
 | [AZ-305 Exam Handbook](az305_exam_handbook.md) | 85 architect-level Q&A with explanations — all 4 design domains: Identity/Governance/Monitoring, Storage, Business Continuity, Infrastructure |
 | [SC-300 Cheatsheet](sc300_cheatsheet.md) | Beginner-friendly one-liner definitions for all SC-300 Identity & Access Administrator terms — MFA, PIM, CA, Identity Protection, Entitlement Management, B2B/B2C and more |
+| [Azure Networking Presentation](presentation/index.html) | Slide deck (HTML + `Azure_Networking.pptx`) on Azure networking |
+
+---
+
+## 🔗 Other Azure material in this repo
+
+| Folder | Focus |
+|--------|-------|
+| [🧰 Azure Services](../azure-services/README.md) | Service-by-service reference handbook + configuration deep dives |
+| [📖 Azure Glossary](../azure-glossary/README.md) | 500+ Azure & Active Directory terms |
+| [🧪 Azure Labs](../azure%20labs/README.md) | 6 batches of hands-on scenarios, beginner → advanced |
+| [🔁 Azure DevOps](../azure-devops/index.md) | Enterprise CI/CD platform guide (12 phases) |
+| [🏗️ Terraform Architecture](../terraform-arch/README.md) | 3-tier app on Azure with Terraform |
+| [⚡ Azure RBAC notes](../quick-reference/azure_rbac_notes.md) | Built-in roles per service, quick reference |
 
 ---
 

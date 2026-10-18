@@ -24,8 +24,8 @@
 15. [Governance, Cost & DR](#15--governance-cost--disaster-recovery)
 16. [Advanced Networking & Protocols](#16--advanced-networking--protocols)
 17. [Advanced Compute, Patterns & Caching](#17--advanced-compute-patterns--caching)
-18. [AD DS Fundamentals](#18--active-directory-domain-services-fundamentals)
-19. [AD Authentication, GPO & Replication](#19--ad-authentication-gpo--replication)
+18. [AD DS Fundamentals](#18--ad-ds-fundamentals)
+19. [AD Authentication, GPO & Replication](#19--ad-auth-gpo--replication)
 20. [Hybrid Identity & Federation](#20--hybrid-identity--federation)
 21. [AD Security, Attacks & Operations](#21--ad-security-attacks--operations)
 

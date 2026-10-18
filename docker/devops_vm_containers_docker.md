@@ -12,12 +12,12 @@
 - [Batch 1 — Foundations & VM vs Containers](#batch-1)
   - [1.1 Why This Topic Matters in DevOps](#11-why-this-topic-matters)
   - [1.2 The Problem Before Containers](#12-the-problem-before-containers)
-  - [1.3 Virtual Machines — Mental Model](#13-virtual-machines)
-  - [1.4 Containers — Mental Model](#14-containers)
+  - [1.3 Virtual Machines — Mental Model](#13-virtual-machines--mental-model)
+  - [1.4 Containers — Mental Model](#14-containers--mental-model)
   - [1.5 Side-by-Side Comparison](#15-side-by-side-comparison)
   - [1.6 When to Use What](#16-when-to-use-what)
-  - [1.7 Gotchas & DevOps Context](#17-gotchas)
-  - [1.8 Production FAQ — Batch 1](#18-production-faq)
+  - [1.7 Gotchas & DevOps Context](#17-gotchas--devops-context)
+  - [1.8 Production FAQ — Batch 1](#18-production-faq--batch-1)
 - [Batch 2 — Container Internals & Docker Architecture](#batch-2) *(coming soon)*
 
 ---

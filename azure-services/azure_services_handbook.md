@@ -127,11 +127,11 @@
 - [Task Set 5: IaC](#task-set-5-iac)
 
 ### Chapter 16 — Interview Questions
-- [Compute Interview Questions](#compute-interview-questions)
-- [Networking Interview Questions](#networking-interview-questions)
-- [Identity & Security Interview Questions](#identity--security-interview-questions)
-- [Storage & IaC Interview Questions](#storage--iac-interview-questions)
-- [General Azure Interview Questions](#general-azure-interview-questions)
+- [Compute Interview Questions](#161-compute-interview-questions)
+- [Networking Interview Questions](#162-networking-interview-questions)
+- [Identity & Security Interview Questions](#163-identity--security-interview-questions)
+- [Storage & IaC Interview Questions](#164-storage--database-interview-questions)
+- [General Azure Interview Questions](#167-scenario-based-interview-questions)
 
 ---
 

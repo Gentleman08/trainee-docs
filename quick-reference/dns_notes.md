@@ -15,7 +15,7 @@
 5. [DNS Caching & TTL](#5-dns-caching--ttl)
 6. [Azure DNS — What You Need to Know](#6-azure-dns--what-you-need-to-know)
 7. [DNS Troubleshooting Commands](#7-dns-troubleshooting-commands)
-8. [DevOps Gotchas ⚠️](#8-devops-gotchas)
+8. [DevOps Gotchas ⚠️](#8-devops-gotchas-)
 
 ---
 

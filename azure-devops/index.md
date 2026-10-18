@@ -145,15 +145,15 @@ Different environments require varying levels of scrutiny before deployments are
 
 Follow the phase guides in sequential order to implement the enterprise platform step-by-step:
 
-1. **[Phase 1: Azure DevOps Fundamentals](file:///h:/trainee-docs/azure-devops/phase-01-fundamentals.md)** - Setting up the organization, projects, pools, and service connections.
-2. **[Phase 2: GitFlow Implementation](file:///h:/trainee-docs/azure-devops/phase-02-gitflow.md)** - Branch models, policies, PR restrictions, and cherry-picking workflows.
-3. **[Phase 3: PR Validation Pipeline](file:///h:/trainee-docs/azure-devops/phase-03-pr-validation.md)** - Standardizing formatting, linting, SCA, and basic secrets protection.
-4. **[Phase 4: DevSecOps Integration](file:///h:/trainee-docs/azure-devops/phase-04-devsecops.md)** - Advanced SonarCloud SAST, Checkov IaC, Trivy container scanning, and security gates.
-5. **[Phase 5: Build Pipeline](file:///h:/trainee-docs/azure-devops/phase-05-build-pipeline.md)** - Enterprise build configurations, semantic versioning, and test coverage publishing.
-6. **[Phase 6: Artifact Management](file:///h:/trainee-docs/azure-devops/phase-06-artifact-management.md)** - Feed management, Azure Container Registry configuration, and secure feed auth.
-7. **[Phase 7: Environment Architecture](file:///h:/trainee-docs/azure-devops/phase-07-environment-architecture.md)** - Environment governance, pre/post checks, exclusive locks, and gates.
-8. **[Phase 8: Release Pipeline](file:///h:/trainee-docs/azure-devops/phase-08-release-pipeline.md)** - Multi-stage deployments, runOnce/rolling jobs, and rollback strategies.
-9. **[Phase 9: Blue-Green Deployment](file:///h:/trainee-docs/azure-devops/phase-09-blue-green-deployment.md)** - Azure App Service slot swaps, traffic routing, canary verification, and slot-specific variables.
-10. **[Phase 10: Production Governance](file:///h:/trainee-docs/azure-devops/phase-10-production-governance.md)** - ITSM/ServiceNow integrations, application insights logging, and production KQL.
-11. **[Phase 11: Disaster Recovery](file:///h:/trainee-docs/azure-devops/phase-11-disaster-recovery.md)** - Multi-region DR architecture, DNS failovers, active-passive sync, and failback plans.
-12. **[Phase 12: Security and Compliance](file:///h:/trainee-docs/azure-devops/phase-12-security-compliance.md)** - Key Vault integration, managed identities, audit log query systems, and compliance audits.
+1. **[Phase 1: Azure DevOps Fundamentals](phase-01-fundamentals.md)** - Setting up the organization, projects, pools, and service connections.
+2. **[Phase 2: GitFlow Implementation](phase-02-gitflow.md)** - Branch models, policies, PR restrictions, and cherry-picking workflows.
+3. **[Phase 3: PR Validation Pipeline](phase-03-pr-validation.md)** - Standardizing formatting, linting, SCA, and basic secrets protection.
+4. **[Phase 4: DevSecOps Integration](phase-04-devsecops.md)** - Advanced SonarCloud SAST, Checkov IaC, Trivy container scanning, and security gates.
+5. **[Phase 5: Build Pipeline](phase-05-build-pipeline.md)** - Enterprise build configurations, semantic versioning, and test coverage publishing.
+6. **[Phase 6: Artifact Management](phase-06-artifact-management.md)** - Feed management, Azure Container Registry configuration, and secure feed auth.
+7. **[Phase 7: Environment Architecture](phase-07-environment-architecture.md)** - Environment governance, pre/post checks, exclusive locks, and gates.
+8. **[Phase 8: Release Pipeline](phase-08-release-pipeline.md)** - Multi-stage deployments, runOnce/rolling jobs, and rollback strategies.
+9. **[Phase 9: Blue-Green Deployment](phase-09-blue-green-deployment.md)** - Azure App Service slot swaps, traffic routing, canary verification, and slot-specific variables.
+10. **[Phase 10: Production Governance](phase-10-production-governance.md)** - ITSM/ServiceNow integrations, application insights logging, and production KQL.
+11. **[Phase 11: Disaster Recovery](phase-11-disaster-recovery.md)** - Multi-region DR architecture, DNS failovers, active-passive sync, and failback plans.
+12. **[Phase 12: Security and Compliance](phase-12-security-compliance.md)** - Key Vault integration, managed identities, audit log query systems, and compliance audits.
